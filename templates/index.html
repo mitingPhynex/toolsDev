@@ -1,0 +1,52 @@
+<html>
+<head>
+  <title>File Upload</title>
+  <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <input id="file" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+    <input id="cs" />
+    <input type="button" value="提交" onclick="upload()" />
+    <input id="xz" type="button" value="下载" onclick="download()" style="display: none"/>
+    <input type="button" value="重置" onclick="reset()" />
+    <p id="zje" ></p>
+    <script>
+        var name;
+        function upload() {
+            let cs = $('#cs').val()
+            let filee = $('#file')[0].files[0]
+            if (filee == undefined || cs == ''){
+                alert('请输入完表单再提交')
+            }else{
+                var fd = new FormData()
+                fd.append('file', filee)
+                fd.append('cs', cs)
+                alert('正在提交中')
+                $.ajax({
+                     method: 'POST',
+                     url: '/uploader',
+                     data: fd,
+                     // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+                     contentType: false,
+                     // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+                     processData: false,
+                     success: function(res) {
+                        if (res.code == 200){
+                            console.log(res)
+                            name = res.name
+                            $('#xz').show()
+                            $('#zje').text(res.zj)
+                        }
+                     }
+                })
+            }
+        }
+        function download() {
+            window.location.href = '/download/'+name
+        }
+        function reset() {
+            location.reload ()
+        }
+    </script>
+</body>
+</html>

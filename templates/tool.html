@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="//cdn.bootcdn.net/ajax/libs/FileSaver.js/2.0.5/FileSaver.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        var nameZip7 = '';
+        function uploadSC7() {
+        let filee = $('#fileSC7')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum7').val();
+        let russianSizes = $('#russianSizes7').val();
+        let manufacturerSizes = $('#manufacturerSizes7').val();
+        let ck_name = $('#ck_name7').val();
+        let files_symbol = $('#files_symbol7').val();
+        let stock_count = $('#stock_count7').val();
+
+        if (files_symbol.split("\n").length !== ck_name.split("\n").length && files_symbol !== "") {
+        alert('files_symbol的长度必须和ck_name的长度一致');
+        return;}
+         
+        if (russianSizes.length !== manufacturerSizes.length) {
+            alert('Russian sizes and manufacturer sizes count must be equal');
+            return;
+        }
+    
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('russianSizes', russianSizes.join(','));
+            fd.append('manufacturerSizes', manufacturerSizes.join(','));
+            fd.append('ck_name', ck_name);
+            fd.append('files_symbol', files_symbol);
+            fd.append('stock_count', stock_count);
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC7',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip7 = res.name;
+                        $('#xzSC7').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+        function downloadSC7() {
+            //debugger
+            console.log("/download/"+nameZip7)
+            saveAs("/download/"+nameZip7);
+        }
+        function reset7() {
+                location.reload ()
+            }
+    </script>
+
+    <script>
+        var nameZip6 = '';
+        function uploadSC6() {
+            let filee = $('#fileSC6')[0].files[0]
+            let fileScSplitNum = $('#fileScSplitNum6').val()
+            if (filee == undefined){
+                alert('请输入完表单再提交')
+            }else{
+                var fd = new FormData()
+                fd.append('file', filee)
+                fd.append('num', fileScSplitNum)
+                $.ajax({
+                     method: 'POST',
+                     url: '/uploaderSC6',
+                     data: fd,
+                     // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+                     contentType: false,
+                     // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+                     processData: false,
+                     success: function(res) {
+                        if (res.code === 200){
+                            console.log(res)
+                            nameZip6 = res.name
+                            $('#xzSC6').show()
+                        }
+                     },
+                      error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                })
+            }
+        }
+        function downloadSC6() {
+            //debugger
+            console.log("/download/"+nameZip6)
+            saveAs("/download/"+nameZip6);
+        }
+        function reset6() {
+                location.reload ()
+            }
+</script>
+
+    <!-- <script>
+        var nameZip5 = '';
+        function uploadSC5() {
+            let filee = $('#fileSC5')[0].files[0]
+            let fileScSplitNum = $('#fileScSplitNum5').val()
+            if (filee == undefined){
+                alert('请输入完表单再提交')
+            }else{
+                var fd = new FormData()
+                fd.append('file', filee)
+                fd.append('num', fileScSplitNum)
+                $.ajax({
+                     method: 'POST',
+                     url: '/uploaderSC5',
+                     data: fd,
+                     // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+                     contentType: false,
+                     // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+                     processData: false,
+                     success: function(res) {
+                        if (res.code === 200){
+                            console.log(res)
+                            nameZip5 = res.name
+                            $('#xzSC5').show()
+                        }
+                     },
+                      error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                })
+            }
+        }
+        function downloadSC5() {
+            //debugger
+            console.log("/download/"+nameZip5)
+            saveAs("/download/"+nameZip5);
+        }
+        function reset5() {
+                location.reload ()
+            }
+</script> -->
+<script>
+    var nameZip5 = '';
+    function uploadSC5() {
+    let filee = $('#fileSC5')[0].files[0];
+    let fileScSplitNum = $('#fileScSplitNum5').val();
+    let russianSizes = $('#russianSizes').val();
+    let manufacturerSizes = $('#manufacturerSizes').val();
+    let files_symbol = $('#files_symbol5').val();
+
+    if (russianSizes.length !== manufacturerSizes.length) {
+        alert('Russian sizes and manufacturer sizes count must be equal');
+        return;
+    }
+
+    if (filee == undefined) {
+        alert('请输入完表单再提交');
+    } else {
+        var fd = new FormData();
+        fd.append('file', filee);
+        fd.append('num', fileScSplitNum);
+        fd.append('russianSizes', russianSizes.join(','));
+        fd.append('manufacturerSizes', manufacturerSizes.join(','));
+        fd.append('files_symbol', files_symbol);
+        $.ajax({
+            method: 'POST',
+            url: '/uploaderSC5',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if (res.code === 200) {
+                    console.log(res);
+                    nameZip5 = res.name;
+                    $('#xzSC5').show();
+                }
+            },
+            error: function(e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+}
+    function downloadSC5() {
+        //debugger
+        console.log("/download/"+nameZip5)
+        saveAs("/download/"+nameZip5);
+    }
+    function reset5() {
+            location.reload ()
+        }
+</script>
+
+    <script>
+        var nameZip4 = '';
+        function uploadSC4() {
+            let filee = $('#fileSC4')[0].files[0]
+            let fileScSplitNum = $('#fileScSplitNum4').val()
+            if (filee == undefined){
+                alert('请输入完表单再提交')
+            }else{
+                var fd = new FormData()
+                fd.append('file', filee)
+                fd.append('num', fileScSplitNum)
+                $.ajax({
+                     method: 'POST',
+                     url: '/uploaderSC4',
+                     data: fd,
+                     // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+                     contentType: false,
+                     // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+                     processData: false,
+                     success: function(res) {
+                        if (res.code === 200){
+                            console.log(res)
+                            nameZip4 = res.name
+                            $('#xzSC4').show()
+                        }
+                     },
+                      error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                })
+            }
+        }
+        function downloadSC4() {
+            //debugger
+            console.log("/download/"+nameZip4)
+            saveAs("/download/"+nameZip4);
+        }
+        function reset4() {
+                location.reload ()
+            }
+</script>
+
+    <script>
+        var nameZip4 = '';
+        function uploadSC4() {
+            let filee = $('#fileSC4')[0].files[0]
+            let fileScSplitNum = $('#fileScSplitNum4').val()
+            if (filee == undefined){
+                alert('请输入完表单再提交')
+            }else{
+                var fd = new FormData()
+                fd.append('file', filee)
+                fd.append('num', fileScSplitNum)
+                $.ajax({
+                     method: 'POST',
+                     url: '/uploaderSC4',
+                     data: fd,
+                     // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+                     contentType: false,
+                     // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+                     processData: false,
+                     success: function(res) {
+                        if (res.code === 200){
+                            console.log(res)
+                            nameZip4 = res.name
+                            $('#xzSC4').show()
+                        }
+                     },
+                      error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                })
+            }
+        }
+        function downloadSC4() {
+            //debugger
+            console.log("/download/"+nameZip4)
+            saveAs("/download/"+nameZip4);
+        }
+        function reset4() {
+                location.reload ()
+            }
+</script>
+
+<script>
+        var nameZip3 = '';
+        function uploadSC3() {
+            let filee = $('#fileSC3')[0].files[0]
+            let fileScSplitNum = $('#fileScSplitNum3').val()
+            if (filee == undefined){
+                alert('请输入完表单再提交')
+            }else{
+                var fd = new FormData()
+                fd.append('file', filee)
+                fd.append('num', fileScSplitNum)
+                $.ajax({
+                     method: 'POST',
+                     url: '/uploaderSC3',
+                     data: fd,
+                     // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+                     contentType: false,
+                     // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+                     processData: false,
+                     success: function(res) {
+                        if (res.code === 200){
+                            console.log(res)
+                            nameZip3 = res.name
+                            $('#xzSC3').show()
+                        }
+                     },
+                      error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                })
+            }
+        }
+        function downloadSC3() {
+            //debugger
+            console.log("/download/"+nameZip3)
+            saveAs("/download/"+nameZip3);
+        }
+        function reset3() {
+                location.reload ()
+            }
+</script>
+
+<script>
+var nameZip2 = '';
+function uploadSC2() {
+    let filee = $('#fileSC2')[0].files[0]
+    let fileScSplitNum = $('#fileScSplitNum2').val()
+    if (filee == undefined){
+        alert('请输入完表单再提交')
+    }else{
+        var fd = new FormData()
+        fd.append('file', filee)
+        fd.append('num', fileScSplitNum)
+        $.ajax({
+             method: 'POST',
+             url: '/uploaderSC2',
+             data: fd,
+             // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+             contentType: false,
+             // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+             processData: false,
+             success: function(res) {
+                if (res.code === 200){
+                    console.log(res)
+                    nameZip2 = res.name
+                    $('#xzSC2').show()
+                }
+             },
+              error : function(e){
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        })
+    }
+}
+function downloadSC2() {
+    //debugger
+    console.log("/download/"+nameZip2)
+    saveAs("/download/"+nameZip2);
+}
+function reset2() {
+        location.reload ()
+    }
+</script>
+
+<script>
+var nameZip1 = '';
+function uploadSC1() {
+    let filee = $('#fileSC1')[0].files[0]
+    let fileScSplitNum = $('#fileScSplitNum1').val()
+    if (filee == undefined){
+        alert('请输入完表单再提交')
+    }else{
+        var fd = new FormData()
+        fd.append('file', filee)
+        fd.append('num', fileScSplitNum)
+        $.ajax({
+             method: 'POST',
+             url: '/uploaderSC1',
+             data: fd,
+             // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+             contentType: false,
+             // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+             processData: false,
+             success: function(res) {
+                if (res.code === 200){
+                    console.log(res)
+                    nameZip1 = res.name
+                    $('#xzSC1').show()
+                }
+             },
+              error : function(e){
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        })
+    }
+}
+function downloadSC1() {
+    //debugger
+    console.log("/download/"+nameZip1)
+    saveAs("/download/"+nameZip1);
+}
+function reset1() {
+        location.reload ()
+    }
+</script>
+
+
+<script>
+var nameZip = '';
+function uploadSC() {
+let filee = $('#fileSC')[0].files[0]
+let fileScSplitNum = $('#fileScSplitNum').val()
+if (filee == undefined){
+    alert('请输入完表单再提交')
+}else{
+    var fd = new FormData()
+    fd.append('file', filee)
+    fd.append('num', fileScSplitNum)
+    $.ajax({
+         method: 'POST',
+         url: '/uploaderSC',
+         data: fd,
+         // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+         contentType: false,
+         // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+         processData: false,
+         success: function(res) {
+            if (res.code === 200){
+                console.log(res)
+                nameZip = res.name
+                $('#xzSC').show()
+            }
+         },
+          error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    })
+}
+}
+function downloadSC() {
+saveAs("/download/"+nameZip);
+}
+function reset() {
+    location.reload ()
+}
+</script>
+
+
+<script>
+var nameFY;
+function uploadFY() {
+    let filee = $('#fileFY')[0].files[0]
+    if (filee == undefined){
+        alert('请输入完表单再提交')
+    }else{
+        var fd = new FormData()
+        fd.append('file', filee)
+        $.ajax({
+             method: 'POST',
+             url: '/uploaderFY',
+             data: fd,
+             // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+             contentType: false,
+             // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+             processData: false,
+             success: function(res) {
+                if (res.code === 200){
+                    console.log(res)
+                    nameFY = res.name
+                    $('#xzFY').show()
+                }
+             },
+              error : function(e){
+                alert("翻译失败")
+            }
+        })
+    }
+}
+function downloadFY() {
+    window.location.href = '/download/'+nameFY
+}
+function reset() {
+        location.reload ()
+    }
+</script>
+
+<script>
+var namePP;
+function uploadPP() {
+    let rule = $('#rule')[0].files[0]
+    let filee = $('#filePP')[0].files[0]
+    if (filee == undefined){
+        alert('请输入完表单再提交')
+    }else{
+        var fd = new FormData()
+        fd.append('file', filee)
+        fd.append('rule', rule)
+        $.ajax({
+             method: 'POST',
+             url: '/uploaderPP',
+             data: fd,
+             // 不修改 Content-Type 属性，使用 FormData 默认的 Content-Type 值
+             contentType: false,
+             // 不对 FormData 中的数据进行 url 编码，而是将 FormData 数据原样发送到服务器
+             processData: false,
+             success: function(res) {
+                if (res.code === 200){
+                    console.log(res)
+                    namePP = res.name
+                    $('#xzPP').show()
+                }
+             }
+        })
+    }
+}
+function downloadPP() {
+    window.location.href = '/download/'+namePP
+}
+function reset() {
+        location.reload ()
+    }
+</script>
+
+    <title>工具汇集</title>
+</head>
+<body style="display: flex;flex-direction: column;font-size: 20px;">
+    <style>
+        input{
+            font-size: 20px;
+        }
+        input[type="button"] {
+            width: 150px; /* 设置提交和重置按钮的宽度 */
+        }
+    </style>
+    <style>
+        select {
+            font-size: 20px; /* 调整字体大小 */
+            font-family: Arial; /* 设置字体 */
+            text-transform: uppercase; /* 转换为大写 */
+            width: 200px; /* 调整选择框的宽度 */
+            height: 400px; /* 调整选择框的高度 */
+        }
+    </style>
+    <div style="display: flex;">
+        <div style="width: 190px;">标题过滤----></div>
+        <input id="filePP" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input id="rule"  type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <input type="button" value="提交" onclick="uploadPP()" />
+        <input id="xzPP" type="button" value="下载" onclick="downloadPP()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset()" />
+        <p id="zje" ></p>
+    </div>
+
+    <div style="height: 30px;"></div>
+
+    <div style="display: flex;">
+        <div style="width: 190px;">复制生成和分割----></div>
+        <input id="fileSC" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum" />
+        <input type="button" value="提交" onclick="uploadSC()" />
+        <input id="xzSC" type="button" value="下载" onclick="downloadSC()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset()" />
+        <p id="zje" ></p>
+    </div>
+    <div style="height: 30px;"></div>
+
+    <!-- 复制生成和分割 -->
+    <div style="display: flex;">
+        <div style="width: 190px;">复制生成和分割----20230717更新：Excel文件中sheet名变更为Supplier template</div>
+        <br>
+        <input id="fileSC1" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum1" />
+        <input type="button" value="提交" onclick="uploadSC1()" />
+        <input id="xzSC1" type="button" value="下载" onclick="downloadSC1()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset1()" />
+        <p id="zje" ></p>
+    </div>
+    <div style="height: 30px;"></div>
+
+    <!-- 复制生成和分割,添加视频和视频封面 -->
+    <div style="display: flex;">
+        <div style="width: 190px;">复制生成和分割----20230816更新：添加视频和视频封面</div>
+        <br>
+        <input id="fileSC6" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum6" />
+        <input type="button" value="提交" onclick="uploadSC6()" />
+        <input id="xzSC6" type="button" value="下载" onclick="downloadSC6()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset6()" />
+        <p id="zje" ></p>
+    </div>
+    <div style="height: 30px;"></div>
+
+    <!-- 暂时没用，先隐藏起来 -->
+    <div style="display: none;" >
+        <div style="width: 270px;">多配色复制生成和分割----></div>
+        <input id="fileSC2" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum2" />
+        <input type="button" value="提交" onclick="uploadSC2()" />
+        <input id="xzSC2" type="button" value="下载" onclick="downloadSC2()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset2()" />
+        <p id="zje" ></p>
+    </div>
+    <div style="height: 30px;"></div>
+
+    <!-- 暂时没用，先隐藏起来 -->
+    <div style="display: none;">
+        <div style="width: 190px;">
+            翻译---->
+        </div>
+        <input id="fileFY" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input type="button" value="提交" onclick="uploadFY()" />
+        <input id="xzFY" type="button" value="下载" onclick="downloadFY()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset()" />
+        <p id="zje" ></p>
+    </div>
+
+    <!-- 多配色复制生成和分割 -->
+    <div style="display: flex;">
+        <div style="width: 270px;">多配色复制生成和分割----20230719更新:Excel文件中sheet名变更为Supplier template</div>
+        <input id="fileSC3" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum3" />
+        <input type="button" value="提交" onclick="uploadSC3()" />
+        <input id="xzSC3" type="button" value="下载" onclick="downloadSC3()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset3()" />
+    </div>
+    <div style="height: 30px;"></div>
+
+    <!-- 复制生成和分割 -->
+    <div style="display: flex;">
+        <div style="width: 190px;">复制生成和分割----20230808更新:支持俄罗斯46、48、50、52、54、56、58,S、M、L、XL、2XL、3XL、4XL</div>
+        <br>
+        <input id="fileSC4" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum4" />
+        <input type="button" value="提交" onclick="uploadSC4()" />
+        <input id="xzSC4" type="button" value="下载" onclick="downloadSC4()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset4()" />
+        <p id="zje" ></p>
+    </div>
+    <div style="height: 30px;"></div>
+
+     <!-- 复制生成和分割连帽卫衣 -->
+     <!-- <div style="display: flex;">
+        <div style="width: 190px;">复制生成和分割连帽卫衣专用----20230815更新:支持俄罗斯44、46、48、50、52、54、56、58、60、62,XS、S、M、L、XL、2XL、3XL、4XL、5XL、6XL</div>
+        <br>
+        <input id="fileSC5" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        <input value="0" id="fileScSplitNum5" />
+        <input type="button" value="提交" onclick="uploadSC5()" />
+        <input id="xzSC5" type="button" value="下载" onclick="downloadSC5()" style="display: none"/>
+        <input type="button" value="重置" onclick="reset5()" />
+        <p id="zje" ></p>
+    </div>
+    <div style="height: 30px;"></div>   -->
+    
+    <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+        <div style="font-weight: bold; margin-bottom: 10px;">服装复制生成和分割尺码自由选择----20230821更新：尺码自由选择、视频和视频封面也自动生成、模板用上传的文件</div>
+        <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+            <div style="width: 190px;"></div>
+            <label>Excel模板文件:</label>
+            <input id="fileSC5" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            <label>分割数:</label>
+            <input value="0" id="fileScSplitNum5" style="width: 50px;" />
+            <label>Russian Sizes:</label>
+            <select id="russianSizes" multiple="multiple" style="width: 100px;">
+                <option value="40">40</option>
+                <option value="42">42</option>
+                <option value="44" selected>44</option>
+                <option value="46" selected>46</option>
+                <option value="48" selected>48</option>
+                <option value="50" selected>50</option>
+                <option value="52" selected>52</option>
+                <option value="54" selected>54</option>
+                <option value="56" selected>56</option>
+                <option value="58" selected>58</option>
+                <option value="60" selected>60</option>
+                <option value="62" selected>62</option>
+                <option value="64">64</option>
+                <option value="66">66</option>
+                <option value="68">68</option>
+                <option value="70">70</option>
+            </select>
+            <label>Manufacturer Sizes:</label>
+            <select id="manufacturerSizes" multiple="multiple" style="width: 100px;">
+                <option value="XXXS">XXXS</option>
+                <option value="XXS">XXS</option>
+                <option value="XS" selected>XS</option>
+                <option value="S" selected>S</option>
+                <option value="M" selected>M</option>
+                <option value="L" selected>L</option>
+                <option value="XL" selected>XL</option>
+                <option value="2XL" selected>2XL</option>
+                <option value="3XL" selected>3XL</option>
+                <option value="4XL" selected>4XL</option>
+                <option value="5XL" selected>5XL</option>
+                <option value="6XL" selected>6XL</option>
+                <option value="7XL">7XL</option>
+                <option value="8XL">8XL</option>
+                <option value="9XL">9XL</option>
+                <option value="10XL">10XL</option>
+            </select>
+            <label>文件名标记:(回车一行代表一个)</label>
+            <textarea id="files_symbol5" rows="16" cols="40"></textarea>
+        </div>
+        <div style="margin-top: 10px;">
+            <input type="button" value="提交" onclick="uploadSC5()" style="height: 40px; font-size: 16px;" />
+            <input id="xzSC5" type="button" value="下载" onclick="downloadSC5()" style="height: 40px; font-size: 16px; display: none;" />
+            <input type="button" value="重置" onclick="reset5()" style="height: 40px; font-size: 16px;" />
+        </div>
+        <p id="zje"></p>
+    </div>    
+    <div style="height: 30px;"></div>  
+
+    <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+        <div style="font-weight: bold; margin-bottom: 10px;">服装生成库存文件通用版，直接上传----20230823更新</div>
+        <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+            <div style="width: 190px;"></div>
+            <label>Excel模板文件:</label>
+            <input id="fileSC7" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            <label>分割数22:</label>
+            <input value="0" id="fileScSplitNum7" style="width: 50px;" />
+            <label>Russian Sizes:</label>
+            <select id="russianSizes7" multiple="multiple" style="width: 100px;">
+                <option value="40">40</option>
+                <option value="42">42</option>
+                <option value="44" selected>44</option>
+                <option value="46" selected>46</option>
+                <option value="48" selected>48</option>
+                <option value="50" selected>50</option>
+                <option value="52" selected>52</option>
+                <option value="54" selected>54</option>
+                <option value="56" selected>56</option>
+                <option value="58" selected>58</option>
+                <option value="60" selected>60</option>
+                <option value="62" selected>62</option>
+                <option value="64">64</option>
+                <option value="66">66</option>
+                <option value="68">68</option>
+                <option value="70">70</option>
+            </select>
+            <label>Manufacturer Sizes:</label>
+            <select id="manufacturerSizes7" multiple="multiple" style="width: 100px;">
+                <option value="XXXS">XXXS</option>
+                <option value="XXS">XXS</option>
+                <option value="XS" selected>XS</option>
+                <option value="S" selected>S</option>
+                <option value="M" selected>M</option>
+                <option value="L" selected>L</option>
+                <option value="XL" selected>XL</option>
+                <option value="2XL" selected>2XL</option>
+                <option value="3XL" selected>3XL</option>
+                <option value="4XL" selected>4XL</option>
+                <option value="5XL" selected>5XL</option>
+                <option value="6XL" selected>6XL</option>
+                <option value="7XL">7XL</option>
+                <option value="8XL">8XL</option>
+                <option value="9XL">9XL</option>
+                <option value="10XL">10XL</option>
+            </select>
+            <label>仓库名称:(回车一行代表一个)</label>
+            <textarea id="ck_name7" rows="16" cols="40"></textarea>
+            <label>文件名标记:(回车一行代表一个)</label>
+            <textarea id="files_symbol7" rows="16" cols="40"></textarea>
+            <label>库存个数:</label>
+            <input value="99" type="text" id="stock_count7" style="width: 50px;" />
+        </div>
+        <div style="margin-top: 10px;">
+            <input type="button" value="提交" onclick="uploadSC7()" style="height: 40px; font-size: 16px;" />
+            <input id="xzSC7" type="button" value="下载" onclick="downloadSC7()" style="height: 40px; font-size: 16px; display: none;" />
+            <input type="button" value="重置" onclick="reset7()" style="height: 40px; font-size: 16px;" />
+        </div>
+    </div>    
+    <div style="height: 30px;"></div> 
+
+    <script>
+        var nameZip8 = '';
+        function uploadSC8() {
+            let filee = $('#fileSC8')[0].files[0];
+            let fileScSplitNum = $('#fileScSplitNum8').val();
+            let discountPrice = $('#discountPrice').val().split('\n');
+            let originalPrice = $('#originalPrice').val().split('\n');
+            let lengthOfSku = $('#lengthOfSku').val().split('\n');
+            let widthOfSku = $('#widthOfSku').val().split('\n');
+            let idSymbol = $('#idSymbol').val().split('\n');
+  
+            let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
+            let lengthToCompare = discountPrice.length;
+            if (arraysToCheck.some(arr => arr.length !== lengthToCompare)) {
+                alert('数组长度必须一致');
+                return;
+            }
+    
+            if (filee == undefined) {
+                alert('请输入完表单再提交');
+            } else {
+                var fd = new FormData();
+                fd.append('file', filee);
+                fd.append('num', fileScSplitNum);
+                fd.append('discountPrice', discountPrice.join(','));
+                fd.append('originalPrice', originalPrice.join(','));
+                fd.append('lengthOfSku', lengthOfSku.join(','));
+                fd.append('widthOfSku', widthOfSku.join(','));
+                fd.append('idSymbol', idSymbol.join(','));
+                $.ajax({
+                    method: 'POST',
+                    url: '/uploaderSC8',
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function(res) {
+                        if (res.code === 200) {
+                            console.log(res);
+                            nameZip8 = res.name;
+                            $('#xzSC8').show();
+                        }
+                    },
+                    error: function(e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+            }
+        }
+    
+        function downloadSC8() {
+            console.log("/download/" + nameZip8)
+            saveAs("/download/" + nameZip8);
+        }
+    
+        function reset8() {
+            location.reload()
+        }
+    </script>
+    <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+    <div style="font-weight: bold; margin-bottom: 10px;">挂毯复制生成和分割----20230824更新：售价、原价、长度、宽度、id标识自由选择</div>
+    <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+        <label>Excel模板文件:</label>
+        <input id="fileSC8" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <label>分割数:</label>
+        <input value="0" id="fileScSplitNum8" style="width: 50px;" />
+        <label>折扣价:(回车一行代表一个)</label>
+        <textarea id="discountPrice" rows="10" cols="20"></textarea>
+        <label>原价:(回车一行代表一个)</label>
+        <textarea id="originalPrice" rows="10" cols="20"></textarea>
+        <label>长度:(回车一行代表一个)</label>
+        <textarea id="lengthOfSku" rows="10" cols="20"></textarea>
+        <label>宽度:(回车一行代表一个)</label>
+        <textarea id="widthOfSku" rows="10" cols="20"></textarea>
+        <label>sku_id标识:(回车一行代表一个)</label>
+        <textarea id="idSymbol" rows="10" cols="20"></textarea>
+    </div>
+    <div style="margin-top: 10px;">
+        <input type="button" value="提交" onclick="uploadSC8()" style="height: 40px; font-size: 16px;" />
+        <input id="xzSC8" type="button" value="下载" onclick="downloadSC8()" style="height: 40px; font-size: 16px; display: none;" />
+        <input type="button" value="重置" onclick="reset8()" style="height: 40px; font-size: 16px;" />
+    </div>
+</div>
+<div style="height: 30px;"></div>
+<script>
+    document.getElementById("discountPrice").value = "18\n19\n20\n21\n22\n23";
+    document.getElementById("originalPrice").value = "20\n21\n22\n23\n24\n25";
+    document.getElementById("lengthOfSku").value = "150\n150\n150\n180\n200\n230";
+    document.getElementById("widthOfSku").value = "100\n130\n150\n150\n150\n150";
+    document.getElementById("idSymbol").value = "_1\n_2\n_3\n_4\n_5\n_6";
+</script>
+    
+</body>
+</html>
