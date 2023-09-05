@@ -601,7 +601,7 @@ def generateStockGT(input, name, num, id_symbol, ck_name, stock_count, files_sym
         if i == 0:
             continue
         for j in range(len(id_symbol)):
-            product_id = df.iloc[i]["Model Name (to combine products into one PDP)*"] + " " + id_symbol[j]
+            product_id = df.iloc[i]["Model Name (to combine products into one PDP)*"] + id_symbol[j]
             product_id_list.append(product_id)
 
     # 当num为0时，不分割product_id_list
