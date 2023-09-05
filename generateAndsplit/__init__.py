@@ -370,7 +370,7 @@ def generateSportshirt(input, name, num, russian_sizes, manufacturer_sizes, file
     zipFile.close()
     return zipName
 
-#生成库存
+#服饰生成库存
 def generateStock(input, name, num, russian_sizes, manufacturer_sizes, ck_name, stock_count, files_symbol):
     logging.info("Starting generateStock function...")
 
@@ -582,6 +582,79 @@ def generateGuatan(input, name, num, id_symbol, price, price_before_discount, le
     zipFile.close()
     return zipName
 
+#挂毯生成库存
+def generateStockGT(input, name, num, id_symbol, ck_name, stock_count, files_symbol):
+    logging.info("Starting generateStock function...")
+
+    newNameLists = []
+    template_path = './generateAndsplit/stock-update-template-cn.xlsx'
+    zipName = name.split(".")[0] + "zip_库存.zip"
+    zipFile = zipfile.ZipFile("./static/{}".format(zipName), 'w')
+
+    logging.info("Reading Excel file...")
+    df = pd.read_excel(input, sheet_name="Template", header=1)
+
+    # 生成id列表
+    product_id_list = []
+    logging.info("Generating product ID list...")
+    for i in range(len(df)):
+        if i == 0:
+            continue
+        for j in range(len(id_symbol)):
+            product_id = df.iloc[i]["Model Name (to combine products into one PDP)*"] + " " + id_symbol[j]
+            product_id_list.append(product_id)
+
+    # 当num为0时，不分割product_id_list
+    if num == 0:
+        product_id_chunks = [product_id_list]
+    else:
+        product_id_chunks = [product_id_list[i:i + num] for i in range(0, len(product_id_list), num)]
+
+    # 检查分割后数组的长度与ck_name的长度是否一致
+    if len(product_id_chunks) != len(ck_name) and num != 0:
+        error_message = 'product_id_list的分割长度与ck_name的长度不一致'
+        logging.error(error_message)
+        return {'error': error_message}
+
+    # 写入数据
+    logging.info("Writing data...")
+    for index, chunk in enumerate(product_id_chunks):
+        logging.info(f"Processing chunk {index + 1}/{len(product_id_chunks)}...")
+        template_wb = load_workbook(template_path)
+
+        # 写入“Warehouse stock”表单
+        worksheet_warehouse = template_wb["仓库库存"]
+
+        # 确定仓库名称
+        warehouse_name = ck_name[0] if num == 0 else ck_name[index]
+
+        # 确定开始行
+        row_to_start = 2
+        
+        # 写入整行数据
+        for product_index, product_id in enumerate(chunk):
+            row_number = product_index + row_to_start
+            row_data = (warehouse_name, product_id, '', int(stock_count))
+            for col, value in enumerate(row_data, start=1):
+                worksheet_warehouse.cell(row=row_number, column=col, value=value)
+        
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        # 添加文件名标记
+        symbol = files_symbol[index] if files_symbol and len(files_symbol) > index else ""
+        newName = name.split(".")[0] + '_库存_' + str(index + 1) + '_' + symbol + ".xlsx"
+
+        # 保存当前工作簿
+        template_wb.save("./static/{}".format(newName))
+        newNameLists.append(newName)
+        zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
+        logging.info(f"Saved file: {newName}")
+
+    zipFile.close()
+    logging.info(f"Zip file created: {zipName}")
+
+    return zipName
 
 # 多配色T恤
 def generateMultiColor(input,name,num):

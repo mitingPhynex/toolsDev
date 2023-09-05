@@ -869,13 +869,94 @@ function reset() {
     </div>
 </div>
 <div style="height: 30px;"></div>
+
+
+<script>
+    var nameZip9 = '';
+    function uploadSC9() {
+    let filee = $('#fileSC9')[0].files[0];
+    let fileScSplitNum = $('#fileScSplitNum9').val();
+    let ck_name = $('#ck_name9').val();
+    let idSymbol = $('#idSymbol9').val().split('\n');
+    let files_symbol = $('#files_symbol9').val();
+    let stock_count = $('#stock_count9').val();
+
+    if (files_symbol.split("\n").length !== ck_name.split("\n").length && files_symbol !== "") {
+    alert('files_symbol的长度必须和ck_name的长度一致');
+    return;}
+
+    if (filee == undefined) {
+        alert('请输入完表单再提交');
+    } else {
+        var fd = new FormData();
+        fd.append('file', filee);
+        fd.append('num', fileScSplitNum);
+        fd.append('ck_name', ck_name);
+        fd.append('idSymbol', idSymbol.join(','));
+        fd.append('files_symbol', files_symbol);
+        fd.append('stock_count', stock_count);
+        $.ajax({
+            method: 'POST',
+            url: '/uploaderSC9',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if (res.code === 200) {
+                    console.log(res);
+                    nameZip9 = res.name;
+                    $('#xzSC9').show();
+                }
+            },
+            error: function(e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+}
+    function downloadSC9() {
+        //debugger
+        console.log("/download/"+nameZip9)
+        saveAs("/download/"+nameZip9);
+    }
+    function reset9() {
+            location.reload ()
+        }
+</script>
+
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+    <div style="font-weight: bold; margin-bottom: 10px;">挂毯生成库存文件----20230905更新</div>
+    <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+        <div style="width: 190px;"></div>
+        <label>Excel模板文件:</label>
+        <input id="fileSC9" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <label>分割数:</label>
+        <input value="0" id="fileScSplitNum9" style="width: 50px;" />
+        <label>仓库名称:(回车一行代表一个)</label>
+        <textarea id="ck_name9" rows="16" cols="40"></textarea>
+        <label>sku_id标识:(回车一行代表一个)</label>
+        <textarea id="idSymbol9" rows="10" cols="20"></textarea>
+        <label>文件名标记:(回车一行代表一个)</label>
+        <textarea id="files_symbol9" rows="16" cols="40"></textarea>
+        <label>库存个数:</label>
+        <input value="99" type="text" id="stock_count9" style="width: 50px;" />
+    </div>
+    <div style="margin-top: 10px;">
+        <input type="button" value="提交" onclick="uploadSC9()" style="height: 40px; font-size: 16px;" />
+        <input id="xzSC9" type="button" value="下载" onclick="downloadSC9()" style="height: 40px; font-size: 16px; display: none;" />
+        <input type="button" value="重置" onclick="reset9()" style="height: 40px; font-size: 16px;" />
+    </div>
+</div>    
+<div style="height: 30px;"></div> 
+
 <script>
     document.getElementById("discountPrice").value = "18\n19\n20\n21\n22\n23";
     document.getElementById("originalPrice").value = "20\n21\n22\n23\n24\n25";
     document.getElementById("lengthOfSku").value = "150\n150\n150\n180\n200\n230";
     document.getElementById("widthOfSku").value = "100\n130\n150\n150\n150\n150";
     document.getElementById("idSymbol").value = "_1\n_2\n_3\n_4\n_5\n_6";
+    document.getElementById("idSymbol9").value = "_1\n_2\n_3\n_4\n_5\n_6";
 </script>
-    
 </body>
 </html>

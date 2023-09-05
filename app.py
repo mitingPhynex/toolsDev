@@ -9,7 +9,7 @@ from datetime import datetime
 from bq import bq
 from bq1 import bq1
 from bq2 import bq2
-from generateAndsplit import generateMultiColor,generate,generate2,generateSportshirt,generateNew,generateStock,generateGuatan
+from generateAndsplit import generateMultiColor,generate,generate2,generateSportshirt,generateNew,generateStock,generateGuatan,generateStockGT
 from fy import fy
 from pp import pp, getRule
 
@@ -180,6 +180,24 @@ def uploaderSC8():
         name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
         file.save('./static/{}'.format(name))
         zipName = generateGuatan('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku)
+        return jsonify({"name": zipName, 'code': 200})
+    
+#挂毯生成库存数据
+@app.route('/uploaderSC9', methods=['GET', 'POST'])
+def uploaderSC9():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        num = int(request.form.get("num"))
+        ck_name = request.form.get("ck_name").split("\n")
+        id_symbol = request.form.get("idSymbol").split(",")
+        files_symbol = request.form.get("files_symbol").split("\n")
+        stock_count = request.form.get("stock_count")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateStockGT('./static/{}'.format(name), name, num, id_symbol, ck_name, stock_count, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
 
 #翻译
