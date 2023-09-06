@@ -730,7 +730,7 @@ function reset() {
             <div style="width: 190px;"></div>
             <label>Excel模板文件:</label>
             <input id="fileSC7" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-            <label>分割数22:</label>
+            <label>分割数:</label>
             <input value="0" id="fileScSplitNum7" style="width: 50px;" />
             <label>Russian Sizes:</label>
             <select id="russianSizes7" multiple="multiple" style="width: 100px;">
@@ -951,12 +951,185 @@ function reset() {
 <div style="height: 30px;"></div> 
 
 <script>
+    var nameZip11 = '';
+    function uploadSC11() {
+        let filee = $('#fileSC11')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum11').val();
+        let discountPrice = $('#discountPrice11').val().split('\n');
+        let originalPrice = $('#originalPrice11').val().split('\n');
+        let lengthOfSku = $('#lengthOfSku11').val().split('\n');
+        let widthOfSku = $('#widthOfSku11').val().split('\n');
+        let idSymbol = $('#idSymbol11').val().split('\n');
+
+        let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
+        let lengthToCompare = discountPrice.length;
+        if (arraysToCheck.some(arr => arr.length !== lengthToCompare)) {
+            alert('数组长度必须一致');
+            return;
+        }
+
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('discountPrice', discountPrice.join(','));
+            fd.append('originalPrice', originalPrice.join(','));
+            fd.append('lengthOfSku', lengthOfSku.join(','));
+            fd.append('widthOfSku', widthOfSku.join(','));
+            fd.append('idSymbol', idSymbol.join(','));
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC11',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip11 = res.name;
+                        $('#xzSC11').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+
+    function downloadSC11() {
+        console.log("/download/" + nameZip11)
+        saveAs("/download/" + nameZip11);
+    }
+
+    function reset11() {
+        location.reload()
+    }
+</script>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+<div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯复制生成和分割(要自己设置好颜色)----20230906更新：售价、原价、长度、宽度、id标识自由选择</div>
+<div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+    <label>Excel模板文件:</label>
+    <input id="fileSC11" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    <label>分割数:</label>
+    <input value="0" id="fileScSplitNum11" style="width: 50px;" />
+    <label>折扣价:(回车一行代表一个)</label>
+    <textarea id="discountPrice11" rows="10" cols="20"></textarea>
+    <label>原价:(回车一行代表一个)</label>
+    <textarea id="originalPrice11" rows="10" cols="20"></textarea>
+    <label>长度:(回车一行代表一个)</label>
+    <textarea id="lengthOfSku11" rows="10" cols="20"></textarea>
+    <label>宽度:(回车一行代表一个)</label>
+    <textarea id="widthOfSku11" rows="10" cols="20"></textarea>
+    <label>sku_id标识:(回车一行代表一个)</label>
+    <textarea id="idSymbol11" rows="10" cols="20"></textarea>
+</div>
+<div style="margin-top: 10px;">
+    <input type="button" value="提交" onclick="uploadSC11()" style="height: 40px; font-size: 16px;" />
+    <input id="xzSC11" type="button" value="下载" onclick="downloadSC11()" style="height: 40px; font-size: 16px; display: none;" />
+    <input type="button" value="重置" onclick="reset11()" style="height: 40px; font-size: 16px;" />
+</div>
+</div>
+<div style="height: 30px;"></div>
+
+<script>
+    var nameZip12 = '';
+    function uploadSC12() {
+    let filee = $('#fileSC12')[0].files[0];
+    let fileScSplitNum = $('#fileScSplitNum12').val();
+    let ck_name = $('#ck_name12').val();
+    let idSymbol = $('#idSymbol12').val().split('\n');
+    let files_symbol = $('#files_symbol12').val();
+    let stock_count = $('#stock_count12').val();
+
+    if (files_symbol.split("\n").length !== ck_name.split("\n").length && files_symbol !== "") {
+    alert('files_symbol的长度必须和ck_name的长度一致');
+    return;}
+
+    if (filee == undefined) {
+        alert('请输入完表单再提交');
+    } else {
+        var fd = new FormData();
+        fd.append('file', filee);
+        fd.append('num', fileScSplitNum);
+        fd.append('ck_name', ck_name);
+        fd.append('idSymbol', idSymbol.join(','));
+        fd.append('files_symbol', files_symbol);
+        fd.append('stock_count', stock_count);
+        $.ajax({
+            method: 'POST',
+            url: '/uploaderSC12',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if (res.code === 200) {
+                    console.log(res);
+                    nameZip12 = res.name;
+                    $('#xzSC12').show();
+                }
+            },
+            error: function(e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+}
+    function downloadSC12() {
+        //debugger
+        console.log("/download/"+nameZip12)
+        saveAs("/download/"+nameZip12);
+    }
+    function reset12() {
+            location.reload ()
+        }
+</script>
+
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+    <div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯生成库存文件----20230906更新</div>
+    <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+        <div style="width: 190px;"></div>
+        <label>Excel模板文件:</label>
+        <input id="fileSC12" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <label>分割数:</label>
+        <input value="0" id="fileScSplitNum12" style="width: 50px;" />
+        <label>仓库名称:(回车一行代表一个)</label>
+        <textarea id="ck_name12" rows="16" cols="40"></textarea>
+        <label>sku_id标识:(回车一行代表一个)</label>
+        <textarea id="idSymbol12" rows="10" cols="20"></textarea>
+        <label>文件名标记:(回车一行代表一个)</label>
+        <textarea id="files_symbol12" rows="16" cols="40"></textarea>
+        <label>库存个数:</label>
+        <input value="99" type="text" id="stock_count12" style="width: 50px;" />
+    </div>
+    <div style="margin-top: 10px;">
+        <input type="button" value="提交" onclick="uploadSC12()" style="height: 40px; font-size: 16px;" />
+        <input id="xzSC12" type="button" value="下载" onclick="downloadSC12()" style="height: 40px; font-size: 16px; display: none;" />
+        <input type="button" value="重置" onclick="reset12()" style="height: 40px; font-size: 16px;" />
+    </div>
+</div>    
+<div style="height: 30px;"></div> 
+
+<script>
     document.getElementById("discountPrice").value = "18\n19\n20\n21\n22\n23";
     document.getElementById("originalPrice").value = "20\n21\n22\n23\n24\n25";
     document.getElementById("lengthOfSku").value = "150\n150\n150\n180\n200\n230";
     document.getElementById("widthOfSku").value = "100\n130\n150\n150\n150\n150";
     document.getElementById("idSymbol").value = "_1\n_2\n_3\n_4\n_5\n_6";
+
     document.getElementById("idSymbol9").value = "_1\n_2\n_3\n_4\n_5\n_6";
+
+    document.getElementById("discountPrice11").value = "18\n19\n20\n21\n22\n23";
+    document.getElementById("originalPrice11").value = "20\n21\n22\n23\n24\n25";
+    document.getElementById("lengthOfSku11").value = "150\n150\n150\n180\n200\n230";
+    document.getElementById("widthOfSku11").value = "100\n130\n150\n150\n150\n150";
+    document.getElementById("idSymbol11").value = "_1\n_2\n_3\n_4\n_5\n_6";
+
+    document.getElementById("idSymbol12").value = "_1\n_2\n_3\n_4\n_5\n_6";
 </script>
 </body>
 </html>
