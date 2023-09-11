@@ -366,7 +366,9 @@ def generateSportshirt(input, name, num, russian_sizes, manufacturer_sizes, file
 
         template_wb.save("./static/{}".format(newName))
         newNameLists.append(newName)
+        logging.info(f"Saved file: {newName}")
         zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
+
     zipFile.close()
     return zipName
 
@@ -445,7 +447,7 @@ def generateStock(input, name, num, russian_sizes, manufacturer_sizes, ck_name, 
     return zipName
 
 # 挂毯通用版
-def generateGuatan(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku):
+def generateGuatan(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol):
     newNameLists = []
 
     #复制输入的文件，并且删除多余的文件内容作为输出的模板
@@ -543,10 +545,16 @@ def generateGuatan(input, name, num, id_symbol, price, price_before_discount, le
     # 写入数据
     for index, (li_supplier, li_video_cover, li_video) in enumerate(zip(cut(new_df, num), cut(new_video_cover_df, num), cut(new_video_df, num))):
         template_wb = load_workbook(template_path)
-        
         # Write to "Template" sheet
         worksheet_supplier = template_wb["Template"]
-        newName = name.split(".")[0] + '_' + str(index + 1) + "_商品.xlsx"
+
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        # 添加文件名标记
+        symbol = files_symbol[index] if files_symbol and len(files_symbol) > index else ""
+        newName = name.split(".")[0] + '_商品_' + str(index + 1) + '_' + symbol + ".xlsx"
+
         for row in dataframe_to_rows(li_supplier, index=False, header=False):
             worksheet_supplier.append(row)
 
@@ -575,10 +583,13 @@ def generateGuatan(input, name, num, id_symbol, price, price_before_discount, le
         #             cell.value = int(cell.value)
         #         except:
         #             pass
-
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
         template_wb.save("./static/{}".format(newName))
         newNameLists.append(newName)
         zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
+        logging.info(f"Saved file: {newName}")
     zipFile.close()
     return zipName
 
@@ -657,7 +668,7 @@ def generateStockGT(input, name, num, id_symbol, ck_name, stock_count, files_sym
     return zipName
 
 # 多配色挂毯
-def generateGuatanWithColor(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku):
+def generateGuatanWithColor(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol):
     newNameLists = []
 
     #复制输入的文件，并且删除多余的文件内容作为输出的模板
@@ -758,7 +769,14 @@ def generateGuatanWithColor(input, name, num, id_symbol, price, price_before_dis
         
         # Write to "Template" sheet
         worksheet_supplier = template_wb["Template"]
-        newName = name.split(".")[0] + '_' + str(index + 1) + "_商品.xlsx"
+
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        # 添加文件名标记
+        symbol = files_symbol[index] if files_symbol and len(files_symbol) > index else ""
+        newName = name.split(".")[0] + '_商品_' + str(index + 1) + '_' + symbol + ".xlsx"
+
         for row in dataframe_to_rows(li_supplier, index=False, header=False):
             worksheet_supplier.append(row)
 
@@ -773,9 +791,13 @@ def generateGuatanWithColor(input, name, num, id_symbol, price, price_before_dis
             worksheet_video = template_wb["Ozone.Video"]
             for row in dataframe_to_rows(li_video, index=False, header=False):
                 worksheet_video.append(row)
-
+        
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
         template_wb.save("./static/{}".format(newName))
         newNameLists.append(newName)
+        logging.info(f"Saved file: {newName}")
         zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
     zipFile.close()
     return zipName

@@ -795,6 +795,8 @@ function reset() {
             let lengthOfSku = $('#lengthOfSku').val().split('\n');
             let widthOfSku = $('#widthOfSku').val().split('\n');
             let idSymbol = $('#idSymbol').val().split('\n');
+            let files_symbol = $('#files_symbol8').val().split('\n');
+            
   
             let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
             let lengthToCompare = discountPrice.length;
@@ -814,6 +816,7 @@ function reset() {
                 fd.append('lengthOfSku', lengthOfSku.join(','));
                 fd.append('widthOfSku', widthOfSku.join(','));
                 fd.append('idSymbol', idSymbol.join(','));
+                fd.append('files_symbol', files_symbol);
                 $.ajax({
                     method: 'POST',
                     url: '/uploaderSC8',
@@ -861,6 +864,8 @@ function reset() {
         <textarea id="widthOfSku" rows="10" cols="20"></textarea>
         <label>sku_id标识:(回车一行代表一个)</label>
         <textarea id="idSymbol" rows="10" cols="20"></textarea>
+        <label>文件名标记:(回车一行代表一个)</label>
+        <textarea id="files_symbol8" rows="16" cols="40"></textarea>
     </div>
     <div style="margin-top: 10px;">
         <input type="button" value="提交" onclick="uploadSC8()" style="height: 40px; font-size: 16px;" />
@@ -960,6 +965,7 @@ function reset() {
         let lengthOfSku = $('#lengthOfSku11').val().split('\n');
         let widthOfSku = $('#widthOfSku11').val().split('\n');
         let idSymbol = $('#idSymbol11').val().split('\n');
+        let files_symbol = $('#files_symbol11').val().split('\n');
 
         let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
         let lengthToCompare = discountPrice.length;
@@ -979,6 +985,7 @@ function reset() {
             fd.append('lengthOfSku', lengthOfSku.join(','));
             fd.append('widthOfSku', widthOfSku.join(','));
             fd.append('idSymbol', idSymbol.join(','));
+            fd.append('files_symbol', files_symbol);
             $.ajax({
                 method: 'POST',
                 url: '/uploaderSC11',
@@ -1026,6 +1033,8 @@ function reset() {
     <textarea id="widthOfSku11" rows="10" cols="20"></textarea>
     <label>sku_id标识:(回车一行代表一个)</label>
     <textarea id="idSymbol11" rows="10" cols="20"></textarea>
+    <label>文件名标记:(回车一行代表一个)</label>
+    <textarea id="files_symbol11" rows="16" cols="40"></textarea>
 </div>
 <div style="margin-top: 10px;">
     <input type="button" value="提交" onclick="uploadSC11()" style="height: 40px; font-size: 16px;" />
