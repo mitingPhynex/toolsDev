@@ -593,6 +593,153 @@ def generateGuatan(input, name, num, id_symbol, price, price_before_discount, le
     zipFile.close()
     return zipName
 
+# 挂毯放挂毯类目
+def generateGuatan2(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol):
+    newNameLists = []
+
+    #复制输入的文件，并且删除多余的文件内容作为输出的模板
+    template_input_path = os.path.join(os.path.dirname(input), 'template_' + os.path.basename(input))
+    shutil.copy(input, template_input_path)
+
+    template_wb = load_workbook(template_input_path)
+
+    sheets_to_clear = ["Template", "Ozone.Video cover", "Ozone.Video"]
+    for sheet_name in sheets_to_clear:
+        try:
+            worksheet = template_wb[sheet_name]
+            max_row = worksheet.max_row
+            # 删除第4行到最后一行
+            if max_row >= 4:
+                worksheet.delete_rows(4, max_row - 3)
+        except KeyError:
+            print(f"Sheet {sheet_name} not found in workbook. Skipping...")
+            continue
+
+    template_wb.save(template_input_path)
+    template_path = template_input_path
+
+    zipName = name.split(".")[0]+"zip_商品.zip"
+    zipFile = zipfile.ZipFile("./static/{}".format(zipName), 'w')
+    df = pd.read_excel(input, sheet_name="Template",header=1)
+
+
+    # 视频封面直接获取第一个，之后所有的sku都设置一样的视频
+    try:
+        df_video_cover = pd.read_excel(input, sheet_name="Ozone.Video cover", header=1)
+        if df_video_cover.shape[0] > 1:
+            video_cover_URL = df_video_cover.iloc[1]["Ozone.Video Cover: URL"] if pd.notna(df_video_cover.iloc[1]["Ozone.Video Cover: URL"]) else ''
+            print(f"video_cover_URL: {video_cover_URL}")
+        else:
+            video_cover_URL = ''
+            print("No video cover data found in the first row. Skipping...")
+    except (IndexError, KeyError):
+        video_cover_URL = ''
+        print("Error reading video cover details. Skipping...")
+    
+    # 视频直接获取第一行，之后所有的sku都设置一样的视频
+    try:
+        df_video = pd.read_excel(input, sheet_name="Ozone.Video", header=1)
+        if df_video.shape[0] > 1:
+            video_name = df_video.iloc[1]["Ozone.Video: Name"] if pd.notna(df_video.iloc[1]["Ozone.Video: Name"]) else ''
+            video_url = df_video.iloc[1]["Ozon.Video: URL"] if pd.notna(df_video.iloc[1]["Ozon.Video: URL"]) else ''
+            video_products_on_video = df_video.iloc[1]["Ozone.Video: products on video"] if pd.notna(df_video.iloc[1]["Ozone.Video: products on video"]) else ''
+            print(f"video_name: {video_name}")
+            print(f"video_url: {video_url}")
+            print(f"video_products_on_video: {video_products_on_video}")
+        else:
+            video_name = video_url = video_products_on_video = ''
+            print("No video data found in the first row. Skipping...")
+    except (IndexError, KeyError):
+        video_name = video_url = video_products_on_video = ''
+        print("Error reading video details. Skipping...")
+
+    # 将每一行按照选择的尺码生成，并将它们在一起
+    new_rows = []
+    new_video_cover= []
+    new_video= []
+    for i in range(len(df)):
+        if i == 0:
+            continue
+        for j in range(len(id_symbol)):
+            df.loc[i, 'Price, USD*'] = price[j]
+            df.loc[i, 'Price before discount, USD'] = price_before_discount[j]
+            df.loc[i, 'Length of the Larger Side, cm*'] = length_of_sku[j]
+            df.loc[i, 'Length of the smaller side, cm'] = width_of_sku[j]
+            df.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + id_symbol[j]
+            row = df.iloc[i].tolist()
+            new_rows.append(row)
+
+            df_video_cover.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + id_symbol[j]
+            df_video_cover.loc[i, "Ozone.Video Cover: URL"] = video_cover_URL if video_cover_URL else ''
+            row = df_video_cover.iloc[i].tolist()
+            new_video_cover.append(row)
+
+            df_video.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + id_symbol[j]
+            df_video.loc[i, "Ozone.Video: Name"] = video_name if video_name else ''
+            df_video.loc[i, "Ozon.Video: URL"] = video_url if video_url else ''
+            df_video.loc[i, "Ozone.Video: products on video"] = video_products_on_video if video_products_on_video else ''
+            row = df_video.iloc[i].tolist()
+            new_video.append(row)
+    columns = df.columns.tolist()
+    new_df = pd.DataFrame(new_rows, columns=columns)
+    video_cover_columns = df_video_cover.columns.tolist()
+    video_columns = df_video.columns.tolist()
+
+    new_df = pd.DataFrame(new_rows, columns=columns)
+    new_video_cover_df = pd.DataFrame(new_video_cover, columns=video_cover_columns)
+    new_video_df = pd.DataFrame(new_video, columns=video_columns)
+
+    # 写入数据
+    for index, (li_supplier, li_video_cover, li_video) in enumerate(zip(cut(new_df, num), cut(new_video_cover_df, num), cut(new_video_df, num))):
+        template_wb = load_workbook(template_path)
+        # Write to "Template" sheet
+        worksheet_supplier = template_wb["Template"]
+
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        # 添加文件名标记
+        symbol = files_symbol[index] if files_symbol and len(files_symbol) > index else ""
+        newName = name.split(".")[0] + '_商品_' + str(index + 1) + '_' + symbol + ".xlsx"
+
+        for row in dataframe_to_rows(li_supplier, index=False, header=False):
+            worksheet_supplier.append(row)
+
+        # 如果 video_cover_URL 不为空，则写入 "Ozone.Video cover" sheet
+        if video_cover_URL:
+            worksheet_video_cover = template_wb["Ozone.Video cover"]
+            for row in dataframe_to_rows(li_video_cover, index=False, header=False):
+                worksheet_video_cover.append(row)
+
+        # 如果 video_name, video_url, video_products_on_video 不为空，则写入 "Ozone.Video" sheet
+        if video_name or video_url or video_products_on_video:
+            worksheet_video = template_wb["Ozone.Video"]
+            for row in dataframe_to_rows(li_video, index=False, header=False):
+                worksheet_video.append(row)
+
+        # Additional operations for "Template" sheet
+        # for cell in worksheet_supplier['U']:
+        #     if cell.value is not None:
+        #         try:
+        #             cell.value = int(cell.value)
+        #         except:
+        #             pass
+        # for cell in worksheet_supplier['AF']:
+        #     if cell.value is not None:
+        #         try:
+        #             cell.value = int(cell.value)
+        #         except:
+        #             pass
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        template_wb.save("./static/{}".format(newName))
+        newNameLists.append(newName)
+        zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
+        logging.info(f"Saved file: {newName}")
+    zipFile.close()
+    return zipName
+
 #挂毯生成库存
 def generateStockGT(input, name, num, id_symbol, ck_name, stock_count, files_symbol):
     logging.info("Starting generateStock function...")
@@ -738,6 +885,141 @@ def generateGuatanWithColor(input, name, num, id_symbol, price, price_before_dis
             df.loc[i, 'Price, USD*'] = price[j]
             df.loc[i, 'Price before discount, USD'] = price_before_discount[j]
             df.loc[i, 'Length of the Larger Side, cm'] = length_of_sku[j]
+            df.loc[i, 'Length of the smaller side, cm'] = width_of_sku[j]
+            df.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            row = df.iloc[i].tolist()
+            new_rows.append(row)
+
+            df_video_cover.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df_video_cover.loc[i, "Ozone.Video Cover: URL"] = video_cover_URL if video_cover_URL else ''
+            row = df_video_cover.iloc[i].tolist()
+            new_video_cover.append(row)
+
+            df_video.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df_video.loc[i, "Ozone.Video: Name"] = video_name if video_name else ''
+            df_video.loc[i, "Ozon.Video: URL"] = video_url if video_url else ''
+            df_video.loc[i, "Ozone.Video: products on video"] = video_products_on_video if video_products_on_video else ''
+            row = df_video.iloc[i].tolist()
+            new_video.append(row)
+    columns = df.columns.tolist()
+    new_df = pd.DataFrame(new_rows, columns=columns)
+    video_cover_columns = df_video_cover.columns.tolist()
+    video_columns = df_video.columns.tolist()
+
+    new_df = pd.DataFrame(new_rows, columns=columns)
+    new_video_cover_df = pd.DataFrame(new_video_cover, columns=video_cover_columns)
+    new_video_df = pd.DataFrame(new_video, columns=video_columns)
+
+    # 写入数据
+    for index, (li_supplier, li_video_cover, li_video) in enumerate(zip(cut(new_df, num), cut(new_video_cover_df, num), cut(new_video_df, num))):
+        template_wb = load_workbook(template_path)
+        
+        # Write to "Template" sheet
+        worksheet_supplier = template_wb["Template"]
+
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        # 添加文件名标记
+        symbol = files_symbol[index] if files_symbol and len(files_symbol) > index else ""
+        newName = name.split(".")[0] + '_商品_' + str(index + 1) + '_' + symbol + ".xlsx"
+
+        for row in dataframe_to_rows(li_supplier, index=False, header=False):
+            worksheet_supplier.append(row)
+
+        # 如果 video_cover_URL 不为空，则写入 "Ozone.Video cover" sheet
+        if video_cover_URL:
+            worksheet_video_cover = template_wb["Ozone.Video cover"]
+            for row in dataframe_to_rows(li_video_cover, index=False, header=False):
+                worksheet_video_cover.append(row)
+
+        # 如果 video_name, video_url, video_products_on_video 不为空，则写入 "Ozone.Video" sheet
+        if video_name or video_url or video_products_on_video:
+            worksheet_video = template_wb["Ozone.Video"]
+            for row in dataframe_to_rows(li_video, index=False, header=False):
+                worksheet_video.append(row)
+        
+        logging.info(f"files_symbol{files_symbol}")
+        if files_symbol and len(files_symbol) >1 :
+            logging.info(f"files_symbolindex{files_symbol[index]}")
+        template_wb.save("./static/{}".format(newName))
+        newNameLists.append(newName)
+        logging.info(f"Saved file: {newName}")
+        zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
+    zipFile.close()
+    return zipName
+
+# 多配色挂毯
+def generateGuatanWithColor2(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol):
+    newNameLists = []
+
+    #复制输入的文件，并且删除多余的文件内容作为输出的模板
+    template_input_path = os.path.join(os.path.dirname(input), 'template_' + os.path.basename(input))
+    shutil.copy(input, template_input_path)
+
+    template_wb = load_workbook(template_input_path)
+
+    sheets_to_clear = ["Template", "Ozone.Video cover", "Ozone.Video"]
+    for sheet_name in sheets_to_clear:
+        try:
+            worksheet = template_wb[sheet_name]
+            max_row = worksheet.max_row
+            # 删除第4行到最后一行
+            if max_row >= 4:
+                worksheet.delete_rows(4, max_row - 3)
+        except KeyError:
+            print(f"Sheet {sheet_name} not found in workbook. Skipping...")
+            continue
+
+    template_wb.save(template_input_path)
+    template_path = template_input_path
+
+    zipName = name.split(".")[0]+"zip_商品.zip"
+    zipFile = zipfile.ZipFile("./static/{}".format(zipName), 'w')
+    df = pd.read_excel(input, sheet_name="Template",header=1)
+
+
+    # 视频封面直接获取第一个，之后所有的sku都设置一样的视频
+    try:
+        df_video_cover = pd.read_excel(input, sheet_name="Ozone.Video cover", header=1)
+        if df_video_cover.shape[0] > 1:
+            video_cover_URL = df_video_cover.iloc[1]["Ozone.Video Cover: URL"] if pd.notna(df_video_cover.iloc[1]["Ozone.Video Cover: URL"]) else ''
+            print(f"video_cover_URL: {video_cover_URL}")
+        else:
+            video_cover_URL = ''
+            print("No video cover data found in the first row. Skipping...")
+    except (IndexError, KeyError):
+        video_cover_URL = ''
+        print("Error reading video cover details. Skipping...")
+    
+    # 视频直接获取第一行，之后所有的sku都设置一样的视频
+    try:
+        df_video = pd.read_excel(input, sheet_name="Ozone.Video", header=1)
+        if df_video.shape[0] > 1:
+            video_name = df_video.iloc[1]["Ozone.Video: Name"] if pd.notna(df_video.iloc[1]["Ozone.Video: Name"]) else ''
+            video_url = df_video.iloc[1]["Ozon.Video: URL"] if pd.notna(df_video.iloc[1]["Ozon.Video: URL"]) else ''
+            video_products_on_video = df_video.iloc[1]["Ozone.Video: products on video"] if pd.notna(df_video.iloc[1]["Ozone.Video: products on video"]) else ''
+            print(f"video_name: {video_name}")
+            print(f"video_url: {video_url}")
+            print(f"video_products_on_video: {video_products_on_video}")
+        else:
+            video_name = video_url = video_products_on_video = ''
+            print("No video data found in the first row. Skipping...")
+    except (IndexError, KeyError):
+        video_name = video_url = video_products_on_video = ''
+        print("Error reading video details. Skipping...")
+
+    # 将每一行按照选择的尺码生成，并将它们在一起
+    new_rows = []
+    new_video_cover= []
+    new_video= []
+    for i in range(len(df)):
+        if i == 0:
+            continue
+        for j in range(len(id_symbol)):
+            df.loc[i, 'Price, USD*'] = price[j]
+            df.loc[i, 'Price before discount, USD'] = price_before_discount[j]
+            df.loc[i, 'Length of the Larger Side, cm*'] = length_of_sku[j]
             df.loc[i, 'Length of the smaller side, cm'] = width_of_sku[j]
             df.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             row = df.iloc[i].tolist()

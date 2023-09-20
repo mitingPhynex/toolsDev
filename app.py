@@ -10,6 +10,7 @@ from bq import bq
 from bq1 import bq1
 from bq2 import bq2
 from generateAndsplit import generateMultiColor,generate,generate2,generateSportshirt,generateNew,generateStock,generateGuatan,generateStockGT,generateGuatanWithColor,generateStockGTWithColor
+from generateAndsplit import generateGuatan2, generateGuatanWithColor2
 from fy import fy
 from pp import pp, getRule
 
@@ -182,6 +183,26 @@ def uploaderSC8():
         file.save('./static/{}'.format(name))
         zipName = generateGuatan('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
+
+#挂毯放挂毯类目
+@app.route('/uploaderSC13', methods=['GET', 'POST'])
+def uploaderSC13():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        num = int(request.form.get("num"))
+        id_symbol = request.form.get("idSymbol").split(",")
+        price = request.form.get("discountPrice").split(",")
+        price_before_discount = request.form.get("originalPrice").split(",")
+        length_of_sku = request.form.get("lengthOfSku").split(",")
+        width_of_sku = request.form.get("widthOfSku").split(",")
+        files_symbol = request.form.get("files_symbol").split(",")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateGuatan2('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
+        return jsonify({"name": zipName, 'code': 200})
     
 #挂毯生成库存数据
 @app.route('/uploaderSC9', methods=['GET', 'POST'])
@@ -221,6 +242,26 @@ def uploaderSC11():
         zipName = generateGuatanWithColor('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
 
+#多配色挂毯放挂毯类目
+@app.route('/uploaderSC14', methods=['GET', 'POST'])
+def uploaderSC14():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        num = int(request.form.get("num"))
+        id_symbol = request.form.get("idSymbol").split(",")
+        price = request.form.get("discountPrice").split(",")
+        price_before_discount = request.form.get("originalPrice").split(",")
+        length_of_sku = request.form.get("lengthOfSku").split(",")
+        width_of_sku = request.form.get("widthOfSku").split(",")
+        files_symbol = request.form.get("files_symbol").split(",")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateGuatanWithColor2('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
+        return jsonify({"name": zipName, 'code': 200})
+    
 #多配色挂毯生成库存数据
 @app.route('/uploaderSC12', methods=['GET', 'POST'])
 def uploaderSC12():

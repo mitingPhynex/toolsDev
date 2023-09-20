@@ -875,6 +875,95 @@ function reset() {
 </div>
 <div style="height: 30px;"></div>
 
+<script>
+    var nameZip13 = '';
+    function uploadSC13() {
+        let filee = $('#fileSC13')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum13').val();
+        let discountPrice = $('#discountPrice13').val().split('\n');
+        let originalPrice = $('#originalPrice13').val().split('\n');
+        let lengthOfSku = $('#lengthOfSku13').val().split('\n');
+        let widthOfSku = $('#widthOfSku13').val().split('\n');
+        let idSymbol = $('#idSymbol13').val().split('\n');
+        let files_symbol = $('#files_symbol13').val().split('\n');
+        
+
+        let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
+        let lengthToCompare = discountPrice.length;
+        if (arraysToCheck.some(arr => arr.length !== lengthToCompare)) {
+            alert('数组长度必须一致');
+            return;
+        }
+
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('discountPrice', discountPrice.join(','));
+            fd.append('originalPrice', originalPrice.join(','));
+            fd.append('lengthOfSku', lengthOfSku.join(','));
+            fd.append('widthOfSku', widthOfSku.join(','));
+            fd.append('idSymbol', idSymbol.join(','));
+            fd.append('files_symbol', files_symbol);
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC13',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip13 = res.name;
+                        $('#xzSC13').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+
+    function downloadSC13() {
+        console.log("/download/" + nameZip13)
+        saveAs("/download/" + nameZip13);
+    }
+
+    function reset13() {
+        location.reload()
+    }
+</script>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+<div style="font-weight: bold; margin-bottom: 10px;">挂毯放挂毯类目复制生成和分割----20230920更新：更新Length of the Larger Side, cm*</div>
+<div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+    <label>Excel模板文件:</label>
+    <input id="fileSC13" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    <label>分割数:</label>
+    <input value="0" id="fileScSplitNum13" style="width: 50px;" />
+    <label>折扣价:(回车一行代表一个)</label>
+    <textarea id="discountPrice13" rows="10" cols="20"></textarea>
+    <label>原价:(回车一行代表一个)</label>
+    <textarea id="originalPrice13" rows="10" cols="20"></textarea>
+    <label>长度:(回车一行代表一个)</label>
+    <textarea id="lengthOfSku13" rows="10" cols="20"></textarea>
+    <label>宽度:(回车一行代表一个)</label>
+    <textarea id="widthOfSku13" rows="10" cols="20"></textarea>
+    <label>sku_id标识:(回车一行代表一个)</label>
+    <textarea id="idSymbol13" rows="10" cols="20"></textarea>
+    <label>文件名标记:(回车一行代表一个)</label>
+    <textarea id="files_symbol13" rows="16" cols="40"></textarea>
+</div>
+<div style="margin-top: 10px;">
+    <input type="button" value="提交" onclick="uploadSC13()" style="height: 40px; font-size: 16px;" />
+    <input id="xzSC13" type="button" value="下载" onclick="downloadSC13()" style="height: 40px; font-size: 16px; display: none;" />
+    <input type="button" value="重置" onclick="reset13()" style="height: 40px; font-size: 16px;" />
+</div>
+</div>
+<div style="height: 30px;"></div>
 
 <script>
     var nameZip9 = '';
@@ -1045,6 +1134,95 @@ function reset() {
 <div style="height: 30px;"></div>
 
 <script>
+    var nameZip14 = '';
+    function uploadSC14() {
+        let filee = $('#fileSC14')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum14').val();
+        let discountPrice = $('#discountPrice14').val().split('\n');
+        let originalPrice = $('#originalPrice14').val().split('\n');
+        let lengthOfSku = $('#lengthOfSku14').val().split('\n');
+        let widthOfSku = $('#widthOfSku14').val().split('\n');
+        let idSymbol = $('#idSymbol14').val().split('\n');
+        let files_symbol = $('#files_symbol14').val().split('\n');
+
+        let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
+        let lengthToCompare = discountPrice.length;
+        if (arraysToCheck.some(arr => arr.length !== lengthToCompare)) {
+            alert('数组长度必须一致');
+            return;
+        }
+
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('discountPrice', discountPrice.join(','));
+            fd.append('originalPrice', originalPrice.join(','));
+            fd.append('lengthOfSku', lengthOfSku.join(','));
+            fd.append('widthOfSku', widthOfSku.join(','));
+            fd.append('idSymbol', idSymbol.join(','));
+            fd.append('files_symbol', files_symbol);
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC14',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip14 = res.name;
+                        $('#xzSC14').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+
+    function downloadSC14() {
+        console.log("/download/" + nameZip14)
+        saveAs("/download/" + nameZip14);
+    }
+
+    function reset14() {
+        location.reload()
+    }
+</script>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+<div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯放挂毯类目复制生成和分割(要自己设置好颜色)----20230920更新：更新Length of the Larger Side, cm*</div>
+<div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+    <label>Excel模板文件:</label>
+    <input id="fileSC14" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    <label>分割数:</label>
+    <input value="0" id="fileScSplitNum14" style="width: 50px;" />
+    <label>折扣价:(回车一行代表一个)</label>
+    <textarea id="discountPrice14" rows="10" cols="20"></textarea>
+    <label>原价:(回车一行代表一个)</label>
+    <textarea id="originalPrice14" rows="10" cols="20"></textarea>
+    <label>长度:(回车一行代表一个)</label>
+    <textarea id="lengthOfSku14" rows="10" cols="20"></textarea>
+    <label>宽度:(回车一行代表一个)</label>
+    <textarea id="widthOfSku14" rows="10" cols="20"></textarea>
+    <label>sku_id标识:(回车一行代表一个)</label>
+    <textarea id="idSymbol14" rows="10" cols="20"></textarea>
+    <label>文件名标记:(回车一行代表一个)</label>
+    <textarea id="files_symbol14" rows="16" cols="40"></textarea>
+</div>
+<div style="margin-top: 10px;">
+    <input type="button" value="提交" onclick="uploadSC14()" style="height: 40px; font-size: 16px;" />
+    <input id="xzSC14" type="button" value="下载" onclick="downloadSC14()" style="height: 40px; font-size: 16px; display: none;" />
+    <input type="button" value="重置" onclick="reset14()" style="height: 40px; font-size: 16px;" />
+</div>
+</div>
+<div style="height: 30px;"></div>
+
+<script>
     var nameZip12 = '';
     function uploadSC12() {
     let filee = $('#fileSC12')[0].files[0];
@@ -1124,21 +1302,33 @@ function reset() {
 <div style="height: 30px;"></div> 
 
 <script>
-    document.getElementById("discountPrice").value = "18\n19\n20\n21\n22\n23";
-    document.getElementById("originalPrice").value = "20\n21\n22\n23\n24\n25";
-    document.getElementById("lengthOfSku").value = "150\n150\n150\n180\n200\n230";
-    document.getElementById("widthOfSku").value = "100\n130\n150\n150\n150\n150";
-    document.getElementById("idSymbol").value = "_1\n_2\n_3\n_4\n_5\n_6";
+    document.getElementById("discountPrice").value = "18\n21\n23\n26\n32\n36";
+    document.getElementById("originalPrice").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
+    document.getElementById("lengthOfSku").value = "150\n150\n200\n200\n230\n230";
+    document.getElementById("widthOfSku").value = "100\n150\n150\n180\n150\n180";
+    document.getElementById("idSymbol").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
 
-    document.getElementById("idSymbol9").value = "_1\n_2\n_3\n_4\n_5\n_6";
+    document.getElementById("idSymbol9").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
 
-    document.getElementById("discountPrice11").value = "18\n19\n20\n21\n22\n23";
-    document.getElementById("originalPrice11").value = "20\n21\n22\n23\n24\n25";
-    document.getElementById("lengthOfSku11").value = "150\n150\n150\n180\n200\n230";
-    document.getElementById("widthOfSku11").value = "100\n130\n150\n150\n150\n150";
-    document.getElementById("idSymbol11").value = "_1\n_2\n_3\n_4\n_5\n_6";
+    document.getElementById("discountPrice11").value = "18\n21\n23\n26\n32\n36";
+    document.getElementById("originalPrice11").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
+    document.getElementById("lengthOfSku11").value = "150\n150\n200\n200\n230\n230";
+    document.getElementById("widthOfSku11").value = "100\n150\n150\n180\n150\n180";
+    document.getElementById("idSymbol11").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
 
-    document.getElementById("idSymbol12").value = "_1\n_2\n_3\n_4\n_5\n_6";
+    document.getElementById("idSymbol12").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
+
+    document.getElementById("discountPrice13").value = "18\n21\n23\n26\n32\n36";
+    document.getElementById("originalPrice13").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
+    document.getElementById("lengthOfSku13").value = "150\n150\n200\n200\n230\n230";
+    document.getElementById("widthOfSku13").value = "100\n150\n150\n180\n150\n180";
+    document.getElementById("idSymbol13").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
+
+    document.getElementById("discountPrice14").value = "18\n21\n23\n26\n32\n36";
+    document.getElementById("originalPrice14").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
+    document.getElementById("lengthOfSku14").value = "150\n150\n200\n200\n230\n230";
+    document.getElementById("widthOfSku14").value = "100\n150\n150\n180\n150\n180";
+    document.getElementById("idSymbol14").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
 </script>
 </body>
 </html>
