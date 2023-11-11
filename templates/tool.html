@@ -665,17 +665,17 @@ function reset() {
         <p id="zje" ></p>
     </div>
     <div style="height: 30px;"></div>   -->
-    
+
     <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-        <div style="font-weight: bold; margin-bottom: 10px;">服装复制生成和分割尺码自由选择----20230821更新：尺码自由选择、视频和视频封面也自动生成、模板用上传的文件</div>
+        <div style="font-weight: bold; margin-bottom: 10px;">多配色服装复制生成和分割尺码自由选择--20231014更新--多配色子sku命名规则为:主sku Product color* 尺码</div>
         <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
             <div style="width: 190px;"></div>
             <label>Excel模板文件:</label>
-            <input id="fileSC5" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            <input id="fileSC15" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
             <label>分割数:</label>
-            <input value="0" id="fileScSplitNum5" style="width: 50px;" />
+            <input value="0" id="fileScSplitNum15" style="width: 50px;" />
             <label>Russian Sizes:</label>
-            <select id="russianSizes" multiple="multiple" style="width: 100px;">
+            <select id="russianSizes15" multiple="multiple" style="width: 100px;">
                 <option value="40">40</option>
                 <option value="42">42</option>
                 <option value="44" selected>44</option>
@@ -694,7 +694,7 @@ function reset() {
                 <option value="70">70</option>
             </select>
             <label>Manufacturer Sizes:</label>
-            <select id="manufacturerSizes" multiple="multiple" style="width: 100px;">
+            <select id="manufacturerSizes15" multiple="multiple" style="width: 100px;">
                 <option value="XXXS">XXXS</option>
                 <option value="XXS">XXS</option>
                 <option value="XS" selected>XS</option>
@@ -713,16 +713,190 @@ function reset() {
                 <option value="10XL">10XL</option>
             </select>
             <label>文件名标记:(回车一行代表一个)</label>
-            <textarea id="files_symbol5" rows="16" cols="40"></textarea>
+            <textarea id="files_symbol15" rows="16" cols="40"></textarea>
         </div>
         <div style="margin-top: 10px;">
-            <input type="button" value="提交" onclick="uploadSC5()" style="height: 40px; font-size: 16px;" />
-            <input id="xzSC5" type="button" value="下载" onclick="downloadSC5()" style="height: 40px; font-size: 16px; display: none;" />
-            <input type="button" value="重置" onclick="reset5()" style="height: 40px; font-size: 16px;" />
+            <input type="button" value="提交" onclick="uploadSC15()" style="height: 40px; font-size: 16px;" />
+            <input id="xzSC15" type="button" value="下载" onclick="downloadSC15()" style="height: 40px; font-size: 16px; display: none;" />
+            <input type="button" value="重置" onclick="reset15()" style="height: 40px; font-size: 16px;" />
         </div>
         <p id="zje"></p>
     </div>    
     <div style="height: 30px;"></div>  
+    <script>
+        var nameZip15 = '';
+        function uploadSC15() {
+        let filee = $('#fileSC15')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum15').val();
+        let russianSizes = $('#russianSizes15').val();
+        let manufacturerSizes = $('#manufacturerSizes15').val();
+        let files_symbol = $('#files_symbol15').val();
+    
+        if (russianSizes.length !== manufacturerSizes.length) {
+            alert('Russian sizes and manufacturer sizes count must be equal');
+            return;
+        }
+    
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('russianSizes', russianSizes.join(','));
+            fd.append('manufacturerSizes', manufacturerSizes.join(','));
+            fd.append('files_symbol', files_symbol);
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC15',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip15 = res.name;
+                        $('#xzSC15').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+        function downloadSC15() {
+            //debugger
+            console.log("/download/"+nameZip15)
+            saveAs("/download/"+nameZip15);
+        }
+        function reset15() {
+                location.reload ()
+            }
+    </script>
+
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+    <div style="font-weight: bold; margin-bottom: 10px;">多配色服装生成库存文件通用版，直接上传----20231014更新：多配色子sku命名规则为:主sku Product color* 尺码</div>
+    <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+        <div style="width: 190px;"></div>
+        <label>Excel模板文件:</label>
+        <input id="fileSC16" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <label>分割数:</label>
+        <input value="0" id="fileScSplitNum16" style="width: 50px;" />
+        <label>Russian Sizes:</label>
+        <select id="russianSizes16" multiple="multiple" style="width: 100px;">
+            <option value="40">40</option>
+            <option value="42">42</option>
+            <option value="44" selected>44</option>
+            <option value="46" selected>46</option>
+            <option value="48" selected>48</option>
+            <option value="50" selected>50</option>
+            <option value="52" selected>52</option>
+            <option value="54" selected>54</option>
+            <option value="56" selected>56</option>
+            <option value="58" selected>58</option>
+            <option value="60" selected>60</option>
+            <option value="62" selected>62</option>
+            <option value="64">64</option>
+            <option value="66">66</option>
+            <option value="68">68</option>
+            <option value="70">70</option>
+        </select>
+        <label>Manufacturer Sizes:</label>
+        <select id="manufacturerSizes16" multiple="multiple" style="width: 100px;">
+            <option value="XXXS">XXXS</option>
+            <option value="XXS">XXS</option>
+            <option value="XS" selected>XS</option>
+            <option value="S" selected>S</option>
+            <option value="M" selected>M</option>
+            <option value="L" selected>L</option>
+            <option value="XL" selected>XL</option>
+            <option value="2XL" selected>2XL</option>
+            <option value="3XL" selected>3XL</option>
+            <option value="4XL" selected>4XL</option>
+            <option value="5XL" selected>5XL</option>
+            <option value="6XL" selected>6XL</option>
+            <option value="7XL">7XL</option>
+            <option value="8XL">8XL</option>
+            <option value="9XL">9XL</option>
+            <option value="10XL">10XL</option>
+        </select>
+        <label>仓库名称:(回车一行代表一个)</label>
+        <textarea id="ck_name16" rows="16" cols="40"></textarea>
+        <label>文件名标记:(回车一行代表一个)</label>
+        <textarea id="files_symbol16" rows="16" cols="40"></textarea>
+        <label>库存个数:</label>
+        <input value="99" type="text" id="stock_count16" style="width: 50px;" />
+    </div>
+    <div style="margin-top: 10px;">
+        <input type="button" value="提交" onclick="uploadSC16()" style="height: 40px; font-size: 16px;" />
+        <input id="xzSC16" type="button" value="下载" onclick="downloadSC16()" style="height: 40px; font-size: 16px; display: none;" />
+        <input type="button" value="重置" onclick="reset16()" style="height: 40px; font-size: 16px;" />
+    </div>
+</div>
+<script>
+    var nameZip16 = '';
+    function uploadSC16() {
+    let filee = $('#fileSC16')[0].files[0];
+    let fileScSplitNum = $('#fileScSplitNum16').val();
+    let russianSizes = $('#russianSizes16').val();
+    let manufacturerSizes = $('#manufacturerSizes16').val();
+    let ck_name = $('#ck_name16').val();
+    let files_symbol = $('#files_symbol16').val();
+    let stock_count = $('#stock_count16').val();
+
+    if (files_symbol.split("\n").length !== ck_name.split("\n").length && files_symbol !== "") {
+    alert('files_symbol的长度必须和ck_name的长度一致');
+    return;}
+     
+    if (russianSizes.length !== manufacturerSizes.length) {
+        alert('Russian sizes and manufacturer sizes count must be equal');
+        return;
+    }
+
+    if (filee == undefined) {
+        alert('请输入完表单再提交');
+    } else {
+        var fd = new FormData();
+        fd.append('file', filee);
+        fd.append('num', fileScSplitNum);
+        fd.append('russianSizes', russianSizes.join(','));
+        fd.append('manufacturerSizes', manufacturerSizes.join(','));
+        fd.append('ck_name', ck_name);
+        fd.append('files_symbol', files_symbol);
+        fd.append('stock_count', stock_count);
+        $.ajax({
+            method: 'POST',
+            url: '/uploaderSC16',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if (res.code === 200) {
+                    console.log(res);
+                    nameZip16 = res.name;
+                    $('#xzSC16').show();
+                }
+            },
+            error: function(e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+}
+    function downloadSC16() {
+        //debugger
+        console.log("/download/"+nameZip16)
+        saveAs("/download/"+nameZip16);
+    }
+    function reset16() {
+            location.reload ()
+        }
+</script>    
+<div style="height: 30px;"></div> 
+
 
     <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
         <div style="font-weight: bold; margin-bottom: 10px;">服装生成库存文件通用版，直接上传----20230823更新</div>
@@ -1277,7 +1451,7 @@ function reset() {
 </script>
 
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-    <div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯生成库存文件----20230906更新</div>
+    <div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯、挂毯生成库存文件----20230906更新</div>
     <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
         <div style="width: 190px;"></div>
         <label>Excel模板文件:</label>
@@ -1300,6 +1474,96 @@ function reset() {
     </div>
 </div>    
 <div style="height: 30px;"></div> 
+
+<script>
+    var nameZip17 = '';
+    function uploadSC17() {
+        let filee = $('#fileSC17')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum17').val();
+        let discountPrice = $('#discountPrice17').val().split('\n');
+        let originalPrice = $('#originalPrice17').val().split('\n');
+        let lengthOfSku = $('#lengthOfSku17').val().split('\n');
+        let widthOfSku = $('#widthOfSku17').val().split('\n');
+        let idSymbol = $('#idSymbol17').val().split('\n');
+        let files_symbol = $('#files_symbol17').val().split('\n');
+
+        let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, widthOfSku, idSymbol];
+        let lengthToCompare = discountPrice.length;
+        if (arraysToCheck.some(arr => arr.length !== lengthToCompare)) {
+            alert('数组长度必须一致');
+            return;
+        }
+
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('discountPrice', discountPrice.join(','));
+            fd.append('originalPrice', originalPrice.join(','));
+            fd.append('lengthOfSku', lengthOfSku.join(','));
+            fd.append('widthOfSku', widthOfSku.join(','));
+            fd.append('idSymbol', idSymbol.join(','));
+            fd.append('files_symbol', files_symbol);
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC17',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip17 = res.name;
+                        $('#xzSC17').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+
+    function downloadSC17() {
+        console.log("/download/" + nameZip17)
+        saveAs("/download/" + nameZip17);
+    }
+
+    function reset17() {
+        location.reload()
+    }
+</script>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+<div style="font-weight: bold; margin-bottom: 10px;">多配色浴帘复制生成和分割(要自己设置好颜色)----20231111更新：更新Height, cm*和Width, cm</div>
+<div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+    <label>Excel模板文件:</label>
+    <input id="fileSC17" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    <label>分割数:</label>
+    <input value="0" id="fileScSplitNum17" style="width: 50px;" />
+    <label>折扣价:(回车一行代表一个)</label>
+    <textarea id="discountPrice17" rows="10" cols="20"></textarea>
+    <label>原价:(回车一行代表一个)</label>
+    <textarea id="originalPrice17" rows="10" cols="20"></textarea>
+    <label>长度:(回车一行代表一个)</label>
+    <textarea id="lengthOfSku17" rows="10" cols="20"></textarea>
+    <label>宽度:(回车一行代表一个)</label>
+    <textarea id="widthOfSku17" rows="10" cols="20"></textarea>
+    <label>sku_id标识:(回车一行代表一个)</label>
+    <textarea id="idSymbol17" rows="10" cols="20"></textarea>
+    <label>文件名标记:(回车一行代表一个)</label>
+    <textarea id="files_symbol17" rows="16" cols="40"></textarea>
+</div>
+<div style="margin-top: 10px;">
+    <input type="button" value="提交" onclick="uploadSC17()" style="height: 40px; font-size: 16px;" />
+    <input id="xzSC17" type="button" value="下载" onclick="downloadSC17()" style="height: 40px; font-size: 16px; display: none;" />
+    <input type="button" value="重置" onclick="reset17()" style="height: 40px; font-size: 16px;" />
+</div>
+</div>
+<div style="height: 30px;"></div>
+
 
 <script>
     document.getElementById("discountPrice").value = "18\n21\n23\n26\n32\n36";
@@ -1329,6 +1593,12 @@ function reset() {
     document.getElementById("lengthOfSku14").value = "150\n150\n200\n200\n230\n230";
     document.getElementById("widthOfSku14").value = "100\n150\n150\n180\n150\n180";
     document.getElementById("idSymbol14").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
+
+    document.getElementById("discountPrice17").value = "30\n32";
+    document.getElementById("originalPrice17").value = "45.99\n48.99";
+    document.getElementById("lengthOfSku17").value = "180\n180";
+    document.getElementById("widthOfSku17").value = "180\n200";
+    document.getElementById("idSymbol17").value = "_180x180\n_180x200";
 </script>
 </body>
 </html>

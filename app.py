@@ -10,7 +10,7 @@ from bq import bq
 from bq1 import bq1
 from bq2 import bq2
 from generateAndsplit import generateMultiColor,generate,generate2,generateSportshirt,generateNew,generateStock,generateGuatan,generateStockGT,generateGuatanWithColor,generateStockGTWithColor
-from generateAndsplit import generateGuatan2, generateGuatanWithColor2
+from generateAndsplit import generateGuatan2, generateGuatanWithColor2, generateMultiCloth, generateStockMulti, generateYulianWithColor
 from fy import fy
 from pp import pp, getRule
 
@@ -144,7 +144,7 @@ def uploaderSC5():
         file.save('./static/{}'.format(name))
         zipName = generateSportshirt('./static/{}'.format(name), name, num, russian_sizes, manufacturer_sizes, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
-
+ 
 #生成库存数据
 @app.route('/uploaderSC7', methods=['GET', 'POST'])
 def uploaderSC7():
@@ -163,7 +163,44 @@ def uploaderSC7():
         file.save('./static/{}'.format(name))
         zipName = generateStock('./static/{}'.format(name), name, num, russian_sizes, manufacturer_sizes, ck_name, stock_count, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
-    
+       
+#多配色复制生成和分割通用版
+@app.route('/uploaderSC15', methods=['GET', 'POST'])
+def uploaderSC15():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        num = int(request.form.get("num"))
+        russian_sizes = request.form.get("russianSizes").split(",")
+        manufacturer_sizes = request.form.get("manufacturerSizes").split(",")
+        files_symbol = request.form.get("files_symbol").split("\n")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateMultiCloth('./static/{}'.format(name), name, num, russian_sizes, manufacturer_sizes, files_symbol)
+        return jsonify({"name": zipName, 'code': 200})
+
+#多配色生成库存数据
+@app.route('/uploaderSC16', methods=['GET', 'POST'])
+def uploaderSC16():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        num = int(request.form.get("num"))
+        russian_sizes = request.form.get("russianSizes").split(",")
+        manufacturer_sizes = request.form.get("manufacturerSizes").split(",")
+        ck_name = request.form.get("ck_name").split("\n")
+        files_symbol = request.form.get("files_symbol").split("\n")
+        stock_count = request.form.get("stock_count")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateStockMulti('./static/{}'.format(name), name, num, russian_sizes, manufacturer_sizes, ck_name, stock_count, files_symbol)
+        return jsonify({"name": zipName, 'code': 200})
+
+
 #挂毯
 @app.route('/uploaderSC8', methods=['GET', 'POST'])
 def uploaderSC8():
@@ -262,7 +299,7 @@ def uploaderSC14():
         zipName = generateGuatanWithColor2('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
     
-#多配色挂毯生成库存数据
+#多配色挂毯、浴帘生成库存数据
 @app.route('/uploaderSC12', methods=['GET', 'POST'])
 def uploaderSC12():
     if request.method == 'POST':
@@ -280,6 +317,25 @@ def uploaderSC12():
         zipName = generateStockGTWithColor('./static/{}'.format(name), name, num, id_symbol, ck_name, stock_count, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
 
+#多配色浴帘
+@app.route('/uploaderSC17', methods=['GET', 'POST'])
+def uploaderSC17():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        num = int(request.form.get("num"))
+        id_symbol = request.form.get("idSymbol").split(",")
+        price = request.form.get("discountPrice").split(",")
+        price_before_discount = request.form.get("originalPrice").split(",")
+        length_of_sku = request.form.get("lengthOfSku").split(",")
+        width_of_sku = request.form.get("widthOfSku").split(",")
+        files_symbol = request.form.get("files_symbol").split(",")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateYulianWithColor('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
+        return jsonify({"name": zipName, 'code': 200})
 
 #翻译
 # @app.route('/uploaderFY',methods=['GET','POST'])
