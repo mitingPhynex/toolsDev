@@ -1522,6 +1522,73 @@ def generateYulianWithColor(input, name, num, id_symbol, price, price_before_dis
     zipFile.close()
     return zipName
 
+# TikTok服饰通用版
+def generateTikTokCloth(input, name, manufacturer_sizes):
+    newNameLists = []
+
+    # 复制输入的文件，并且删除多余的文件内容作为输出的模板
+    template_input_path = os.path.join(os.path.dirname(input), 'template_' + os.path.basename(input))
+    shutil.copy(input, template_input_path)
+
+    template_wb = load_workbook(template_input_path)
+
+    sheets_to_clear = ["Sheet1"]
+    for sheet_name in sheets_to_clear:
+        try:
+            worksheet = template_wb[sheet_name]
+            max_row = worksheet.max_row
+            # 删除第2行到最后一行
+            if max_row > 1:
+                worksheet.delete_rows(2, max_row)
+        except KeyError:
+            print(f"Sheet {sheet_name} not found in workbook. Skipping...")
+            continue
+
+    template_wb.save(template_input_path)
+    template_path = template_input_path
+
+    zipName = name.split(".")[0] + "_商品.zip"
+    zipFile = zipfile.ZipFile("./static/{}".format(zipName), 'w')
+    df = pd.read_excel(input, sheet_name="Sheet1", header=0)
+
+    # 将每一行按照选择的尺码生成，并将它们在一起
+    new_rows = []
+    for i in range(len(df)):
+        logging.info(f"i: {i}")
+        logging.info(f"len(df): {len(df)}")
+        for j in range(len(manufacturer_sizes)):
+            # 复制一份原始行数据
+            new_row = df.iloc[i].copy()
+            # 更新变种属性值二和变种名称
+            new_row['变种属性值二'] = manufacturer_sizes[j]
+            new_row['变种名称'] = f'black，{manufacturer_sizes[j]}'
+            #logging.info(f"new_row): {new_row}")
+            # 将新行添加到列表中
+            new_rows.append(new_row)
+
+    columns = df.columns.tolist()
+    new_df = pd.DataFrame(new_rows, columns=columns)
+
+    # 写入数据
+    template_wb = load_workbook(template_path)
+
+    # Write to "Sheet1" sheet
+    worksheet_supplier = template_wb["Sheet1"]
+
+    # 添加文件名标记
+    newName = name.split(".")[0] + '_商品.xlsx'
+
+    for row in dataframe_to_rows(new_df, index=False, header=False):
+        worksheet_supplier.append(row)
+
+    template_wb.save("./static/{}".format(newName))
+    newNameLists.append(newName)
+    logging.info(f"Saved file: {newName}")
+    # zipFile.write("./static/{}".format(newName), newName, zipfile.ZIP_DEFLATED)
+
+    # zipFile.close()
+    return newName
+
 
 
 # 多配色T恤

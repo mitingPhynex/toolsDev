@@ -10,7 +10,7 @@ from bq import bq
 from bq1 import bq1
 from bq2 import bq2
 from generateAndsplit import generateMultiColor,generate,generate2,generateSportshirt,generateNew,generateStock,generateGuatan,generateStockGT,generateGuatanWithColor,generateStockGTWithColor
-from generateAndsplit import generateGuatan2, generateGuatanWithColor2, generateMultiCloth, generateStockMulti, generateYulianWithColor
+from generateAndsplit import generateGuatan2, generateGuatanWithColor2, generateMultiCloth, generateStockMulti, generateYulianWithColor, generateTikTokCloth
 from fy import fy
 from pp import pp, getRule
 
@@ -371,6 +371,19 @@ def getCurrentDateTimeFormatted(format_str="%Y-%m-%d %H%M%S"):
     formatted_datetime = current_datetime.strftime(format_str)
     return formatted_datetime
 
+#TikTok自动生成服装尺码
+@app.route('/uploaderSC31', methods=['GET', 'POST'])
+def uploaderSC31():
+    if request.method == 'POST':
+        file = request.files['file']
+        fileName = file.filename.split(".")[0]
+        manufacturer_sizes = request.form.get("manufacturerSizes").split(",")
+
+        # 按照原文件名+时间戳的格式保存上传文件
+        name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
+        file.save('./static/{}'.format(name))
+        zipName = generateTikTokCloth('./static/{}'.format(name), name, manufacturer_sizes)
+        return jsonify({"name": zipName, 'code': 200})
 
 
 def star(name,cs):

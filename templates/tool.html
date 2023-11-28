@@ -1564,6 +1564,82 @@ function reset() {
 </div>
 <div style="height: 30px;"></div>
 
+<script>
+    function uploadSC31() {
+    let filee = $('#fileSC31')[0].files[0];
+    let manufacturerSizes = $('#manufacturerSizes31').val();
+
+    if (filee == undefined) {
+        alert('请输入完表单再提交');
+    } else {
+        var fd = new FormData();
+        fd.append('file', filee);
+        fd.append('manufacturerSizes', manufacturerSizes.join(','));
+        $.ajax({
+            method: 'POST',
+            url: '/uploaderSC31',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if (res.code === 200) {
+                    console.log(res);
+                    nameZip31 = res.name;
+                    $('#xzSC31').show();
+                }
+            },
+            error: function(e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+}
+
+function downloadSC31() {
+    console.log("/download/"+nameZip31)
+    saveAs("/download/"+nameZip31);
+}
+
+function reset31() {
+    location.reload();
+}
+</script>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+    <div style="font-weight: bold; margin-bottom: 10px;">TikTok自动生成--20231227更新--</div>
+    <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+        <div style="width: 190px;"></div>
+        <label>Excel模板文件:</label>
+        <input id="fileSC31" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <label>Manufacturer Sizes:</label>
+        <select id="manufacturerSizes31" multiple="multiple" style="width: 100px;">
+            <!-- Keep the Manufacturer Sizes options -->
+            <option value="XXXS">XXXS</option>
+                <option value="XXS">XXS</option>
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L" selected>L</option>
+                <option value="XL" selected>XL</option>
+                <option value="2XL" selected>2XL</option>
+                <option value="3XL" selected>3XL</option>
+                <option value="4XL" selected>4XL</option>
+                <option value="5XL" selected>5XL</option>
+                <option value="6XL">6XL</option>
+                <option value="7XL">7XL</option>
+                <option value="8XL">8XL</option>
+                <option value="9XL">9XL</option>
+                <option value="10XL">10XL</option>
+        </select>
+    </div>
+    <div style="margin-top: 10px;">
+        <input type="button" value="提交" onclick="uploadSC31()" style="height: 40px; font-size: 16px;" />
+        <input id="xzSC31" type="button" value="下载" onclick="downloadSC31()" style="height: 40px; font-size: 16px; display: none;" />
+        <input type="button" value="重置" onclick="reset31()" style="height: 40px; font-size: 16px;" />
+    </div>
+    <p id="zje"></p>
+</div>    
+<div style="height: 30px;"></div>
 
 <script>
     document.getElementById("discountPrice").value = "18\n21\n23\n26\n32\n36";
