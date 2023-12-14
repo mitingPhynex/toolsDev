@@ -1114,16 +1114,16 @@ def generateGuatanWithColor(input, name, num, id_symbol, price, price_before_dis
             df.loc[i, 'Price before discount, USD'] = price_before_discount[j]
             df.loc[i, 'Length of the Larger Side, cm'] = length_of_sku[j]
             df.loc[i, 'Length of the smaller side, cm'] = width_of_sku[j]
-            df.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             row = df.iloc[i].tolist()
             new_rows.append(row)
 
-            df_video_cover.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df_video_cover.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             df_video_cover.loc[i, "Ozone.Video Cover: URL"] = video_cover_URL if video_cover_URL else ''
             row = df_video_cover.iloc[i].tolist()
             new_video_cover.append(row)
 
-            df_video.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df_video.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             df_video.loc[i, "Ozone.Video: Name"] = video_name if video_name else ''
             df_video.loc[i, "Ozon.Video: URL"] = video_url if video_url else ''
             df_video.loc[i, "Ozone.Video: products on video"] = video_products_on_video if video_products_on_video else ''
@@ -1249,16 +1249,16 @@ def generateGuatanWithColor2(input, name, num, id_symbol, price, price_before_di
             df.loc[i, 'Price before discount, USD'] = price_before_discount[j]
             df.loc[i, 'Length of the Larger Side, cm*'] = length_of_sku[j]
             df.loc[i, 'Length of the smaller side, cm'] = width_of_sku[j]
-            df.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             row = df.iloc[i].tolist()
             new_rows.append(row)
 
-            df_video_cover.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df_video_cover.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             df_video_cover.loc[i, "Ozone.Video Cover: URL"] = video_cover_URL if video_cover_URL else ''
             row = df_video_cover.iloc[i].tolist()
             new_video_cover.append(row)
 
-            df_video.loc[i, "Product ID*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
+            df_video.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             df_video.loc[i, "Ozone.Video: Name"] = video_name if video_name else ''
             df_video.loc[i, "Ozon.Video: URL"] = video_url if video_url else ''
             df_video.loc[i, "Ozone.Video: products on video"] = video_products_on_video if video_products_on_video else ''

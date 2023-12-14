@@ -1021,8 +1021,9 @@ function reset() {
             location.reload()
         }
     </script>
+    <!--
     <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-    <div style="font-weight: bold; margin-bottom: 10px;">挂毯复制生成和分割----20230824更新：售价、原价、长度、宽度、id标识自由选择</div>
+    <div style="font-weight: bold; margin-bottom: 10px;">挂毯复制生成和分割----20230824更新：售价、原价、长度、宽度、id标识自由选择------20231214更新：Product ID*修改为Article code*</div>
     <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
         <label>Excel模板文件:</label>
         <input id="fileSC8" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
@@ -1047,7 +1048,7 @@ function reset() {
         <input type="button" value="重置" onclick="reset8()" style="height: 40px; font-size: 16px;" />
     </div>
 </div>
-<div style="height: 30px;"></div>
+<div style="height: 30px;"></div> 
 
 <script>
     var nameZip13 = '';
@@ -1112,7 +1113,7 @@ function reset() {
     }
 </script>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-<div style="font-weight: bold; margin-bottom: 10px;">挂毯放挂毯类目复制生成和分割----20230920更新：更新Length of the Larger Side, cm*</div>
+<div style="font-weight: bold; margin-bottom: 10px;">挂毯放挂毯类目复制生成和分割----20230920更新：更新Length of the Larger Side, cm*------20231214更新：Product ID*修改为Article code*</div>
 <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
     <label>Excel模板文件:</label>
     <input id="fileSC13" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
@@ -1192,7 +1193,6 @@ function reset() {
             location.reload ()
         }
 </script>
-
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
     <div style="font-weight: bold; margin-bottom: 10px;">挂毯生成库存文件----20230905更新</div>
     <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
@@ -1217,6 +1217,7 @@ function reset() {
     </div>
 </div>    
 <div style="height: 30px;"></div> 
+
 
 <script>
     var nameZip11 = '';
@@ -1280,7 +1281,7 @@ function reset() {
     }
 </script>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-<div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯复制生成和分割(要自己设置好颜色)----20230906更新：售价、原价、长度、宽度、id标识自由选择</div>
+<div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯复制生成和分割(要自己设置好颜色)----20230906更新：售价、原价、长度、宽度、id标识自由选择------20231214更新：Product ID*修改为Article code*</div>
 <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
     <label>Excel模板文件:</label>
     <input id="fileSC11" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
@@ -1305,7 +1306,7 @@ function reset() {
     <input type="button" value="重置" onclick="reset11()" style="height: 40px; font-size: 16px;" />
 </div>
 </div>
-<div style="height: 30px;"></div>
+<div style="height: 30px;"></div>-->
 
 <script>
     var nameZip14 = '';
@@ -1369,7 +1370,7 @@ function reset() {
     }
 </script>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-<div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯放挂毯类目复制生成和分割(要自己设置好颜色)----20230920更新：更新Length of the Larger Side, cm*</div>
+<div style="font-weight: bold; margin-bottom: 10px;">多配色挂毯放挂毯类目复制生成和分割(要自己设置好颜色)----20230920更新：更新Length of the Larger Side, cm*------20231214更新：Product ID*修改为Article code*</div>
 <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
     <label>Excel模板文件:</label>
     <input id="fileSC14" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
@@ -1537,7 +1538,7 @@ function reset() {
     }
 </script>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-<div style="font-weight: bold; margin-bottom: 10px;">多配色浴帘复制生成和分割(要自己设置好颜色)----20231111更新：更新Height, cm*和Width, cm</div>
+<div style="font-weight: bold; margin-bottom: 10px;">多配色浴帘复制生成和分割(要自己设置好颜色)----20231111更新：更新Height, cm*和Width, cm------20231214更新：Product ID*修改为Article code*</div>
 <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
     <label>Excel模板文件:</label>
     <input id="fileSC17" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
@@ -1642,6 +1643,23 @@ function reset31() {
 <div style="height: 30px;"></div>
 
 <script>
+    document.getElementById("idSymbol12").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
+    
+    document.getElementById("discountPrice14").value = "20\n23\n25\n28\n34\n38";
+    document.getElementById("originalPrice14").value = "30.99\n34.99\n37.99\n42.99\n51.99\n57.99";
+    document.getElementById("lengthOfSku14").value = "150\n150\n200\n200\n230\n230";
+    document.getElementById("widthOfSku14").value = "100\n150\n150\n180\n150\n180";
+    document.getElementById("idSymbol14").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
+
+    document.getElementById("discountPrice17").value = "30\n32";
+    document.getElementById("originalPrice17").value = "45.99\n48.99";
+    document.getElementById("lengthOfSku17").value = "180\n180";
+    document.getElementById("widthOfSku17").value = "180\n200";
+    document.getElementById("idSymbol17").value = "_180x180\n_180x200";
+</script>
+
+<!--
+<script>
     document.getElementById("discountPrice").value = "18\n21\n23\n26\n32\n36";
     document.getElementById("originalPrice").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
     document.getElementById("lengthOfSku").value = "150\n150\n200\n200\n230\n230";
@@ -1656,25 +1674,12 @@ function reset31() {
     document.getElementById("widthOfSku11").value = "100\n150\n150\n180\n150\n180";
     document.getElementById("idSymbol11").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
 
-    document.getElementById("idSymbol12").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
-
     document.getElementById("discountPrice13").value = "18\n21\n23\n26\n32\n36";
     document.getElementById("originalPrice13").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
     document.getElementById("lengthOfSku13").value = "150\n150\n200\n200\n230\n230";
     document.getElementById("widthOfSku13").value = "100\n150\n150\n180\n150\n180";
     document.getElementById("idSymbol13").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
-
-    document.getElementById("discountPrice14").value = "18\n21\n23\n26\n32\n36";
-    document.getElementById("originalPrice14").value = "21.99\n25.99\n27.99\n31.99\n38.99\n43.99";
-    document.getElementById("lengthOfSku14").value = "150\n150\n200\n200\n230\n230";
-    document.getElementById("widthOfSku14").value = "100\n150\n150\n180\n150\n180";
-    document.getElementById("idSymbol14").value = "_150x100\n_150x150\n_200x150\n_200x180\n_230x150\n_230x180";
-
-    document.getElementById("discountPrice17").value = "30\n32";
-    document.getElementById("originalPrice17").value = "45.99\n48.99";
-    document.getElementById("lengthOfSku17").value = "180\n180";
-    document.getElementById("widthOfSku17").value = "180\n200";
-    document.getElementById("idSymbol17").value = "_180x180\n_180x200";
 </script>
+-->
 </body>
 </html>
