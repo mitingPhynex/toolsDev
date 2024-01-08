@@ -667,7 +667,7 @@ function reset() {
     <div style="height: 30px;"></div>   -->
 
     <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-        <div style="font-weight: bold; margin-bottom: 10px;">多配色服装复制生成和分割尺码自由选择--20231014更新--多配色子sku命名规则为:主sku Product color* 尺码</div>
+        <div style="font-weight: bold; margin-bottom: 10px;">多配色服装复制生成和分割尺码自由选择--20231014更新--多配色子sku命名规则为:主sku Product color* 尺码------20231219更新：Product ID*修改为Article code*</div>
         <div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
             <div style="width: 190px;"></div>
             <label>Excel模板文件:</label>
@@ -1566,6 +1566,92 @@ function reset() {
 <div style="height: 30px;"></div>
 
 <script>
+    var nameZip41 = '';
+    function uploadSC41() {
+        let filee = $('#fileSC41')[0].files[0];
+        let fileScSplitNum = $('#fileScSplitNum41').val();
+        let discountPrice = $('#discountPrice41').val().split('\n');
+        let originalPrice = $('#originalPrice41').val().split('\n');
+        let lengthOfSku = $('#lengthOfSku41').val().split('\n');
+        let idSymbol = $('#idSymbol41').val().split('\n');
+        let files_symbol = $('#files_symbol41').val().split('\n');
+
+        let arraysToCheck = [discountPrice, originalPrice, lengthOfSku, idSymbol];
+        let lengthToCompare = discountPrice.length;
+        if (arraysToCheck.some(arr => arr.length !== lengthToCompare)) {
+            alert('数组长度必须一致');
+            return;
+        }
+
+        if (filee == undefined) {
+            alert('请输入完表单再提交');
+        } else {
+            var fd = new FormData();
+            fd.append('file', filee);
+            fd.append('num', fileScSplitNum);
+            fd.append('discountPrice', discountPrice.join(','));
+            fd.append('originalPrice', originalPrice.join(','));
+            fd.append('lengthOfSku', lengthOfSku.join(','));
+            fd.append('idSymbol', idSymbol.join(','));
+            fd.append('files_symbol', files_symbol);
+            $.ajax({
+                method: 'POST',
+                url: '/uploaderSC41',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                        nameZip41 = res.name;
+                        $('#xzSC41').show();
+                    }
+                },
+                error: function(e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+    }
+
+    function downloadSC41() {
+        console.log("/download/" + nameZip41)
+        saveAs("/download/" + nameZip41);
+    }
+
+    function reset41() {
+        location.reload()
+    }
+</script>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+<div style="font-weight: bold; margin-bottom: 10px;">多配色三件套(要自己设置好颜色)----20240108更新</div>
+<div style="display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;">
+    <label>Excel模板文件:</label>
+    <input id="fileSC41" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    <label>分割数:</label>
+    <input value="0" id="fileScSplitNum41" style="width: 50px;" />
+    <label>折扣价:(回车一行代表一个)</label>
+    <textarea id="discountPrice41" rows="10" cols="20"></textarea>
+    <label>原价:(回车一行代表一个)</label>
+    <textarea id="originalPrice41" rows="10" cols="20"></textarea>
+    <label>尺寸:(回车一行代表一个)</label>
+    <textarea id="lengthOfSku41" rows="10" cols="20"></textarea>
+    <label>sku_id标识:(回车一行代表一个)</label>
+    <textarea id="idSymbol41" rows="10" cols="20"></textarea>
+    <label>文件名标记:(回车一行代表一个)</label>
+    <textarea id="files_symbol41" rows="16" cols="40"></textarea>
+</div>
+<div style="margin-top: 10px;">
+    <input type="button" value="提交" onclick="uploadSC41()" style="height: 40px; font-size: 16px;" />
+    <input id="xzSC41" type="button" value="下载" onclick="downloadSC41()" style="height: 40px; font-size: 16px; display: none;" />
+    <input type="button" value="重置" onclick="reset41()" style="height: 40px; font-size: 16px;" />
+</div>
+</div>
+<div style="height: 30px;"></div>
+
+
+<script>
     function uploadSC31() {
     let filee = $('#fileSC31')[0].files[0];
     let manufacturerSizes = $('#manufacturerSizes31').val();
@@ -1656,6 +1742,11 @@ function reset31() {
     document.getElementById("lengthOfSku17").value = "180\n180";
     document.getElementById("widthOfSku17").value = "180\n200";
     document.getElementById("idSymbol17").value = "_180x180\n_180x200";
+
+    document.getElementById("discountPrice41").value = "46\n48\n50\n52\n54\n56";
+    document.getElementById("originalPrice41").value = "56\n58\n60\n62\n64\n66";
+    document.getElementById("lengthOfSku41").value = "150*215\n175*215\n180*200\n200*200\n200*220\n220*240";
+    document.getElementById("idSymbol41").value = "_150x215\n_175x215\n_180x200\n_200x200\n_200x220\n_220x240";
 </script>
 
 <!--
