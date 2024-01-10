@@ -1573,6 +1573,7 @@ function reset() {
         let discountPrice = $('#discountPrice41').val().split('\n');
         let originalPrice = $('#originalPrice41').val().split('\n');
         let lengthOfSku = $('#lengthOfSku41').val().split('\n');
+        let widthOfSku = $('#widthOfSku41').val().split('\n');
         let idSymbol = $('#idSymbol41').val().split('\n');
         let files_symbol = $('#files_symbol41').val().split('\n');
 
@@ -1592,6 +1593,7 @@ function reset() {
             fd.append('discountPrice', discountPrice.join(','));
             fd.append('originalPrice', originalPrice.join(','));
             fd.append('lengthOfSku', lengthOfSku.join(','));
+            fd.append('widthOfSku', widthOfSku.join(','));
             fd.append('idSymbol', idSymbol.join(','));
             fd.append('files_symbol', files_symbol);
             $.ajax({
@@ -1635,8 +1637,10 @@ function reset() {
     <textarea id="discountPrice41" rows="10" cols="20"></textarea>
     <label>原价:(回车一行代表一个)</label>
     <textarea id="originalPrice41" rows="10" cols="20"></textarea>
-    <label>尺寸:(回车一行代表一个)</label>
+    <label>被套尺寸:(回车一行代表一个)</label>
     <textarea id="lengthOfSku41" rows="10" cols="20"></textarea>
+    <label>床单尺寸:(回车一行代表一个)</label>
+    <textarea id="widthOfSku41" rows="10" cols="20"></textarea>
     <label>sku_id标识:(回车一行代表一个)</label>
     <textarea id="idSymbol41" rows="10" cols="20"></textarea>
     <label>文件名标记:(回车一行代表一个)</label>
@@ -1745,7 +1749,8 @@ function reset31() {
 
     document.getElementById("discountPrice41").value = "46\n48\n50\n52\n54\n56";
     document.getElementById("originalPrice41").value = "56\n58\n60\n62\n64\n66";
-    document.getElementById("lengthOfSku41").value = "150*215\n175*215\n180*200\n200*200\n200*220\n220*240";
+    document.getElementById("lengthOfSku41").value = "150x215\n175x215\n180x200\n200x200\n200x220\n220x240";
+    document.getElementById("widthOfSku41").value = "150x215\n175x215\n180x200\n200x200\n200x220\n220x240";
     document.getElementById("idSymbol41").value = "_150x215\n_175x215\n_180x200\n_200x200\n_200x220\n_220x240";
 </script>
 

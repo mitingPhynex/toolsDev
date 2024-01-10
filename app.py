@@ -348,12 +348,13 @@ def uploaderSC41():
         price = request.form.get("discountPrice").split(",")
         price_before_discount = request.form.get("originalPrice").split(",")
         length_of_sku = request.form.get("lengthOfSku").split(",")
+        width_of_sku = request.form.get("widthOfSku").split(",")
         files_symbol = request.form.get("files_symbol").split(",")
 
         # 按照原文件名+时间戳的格式保存上传文件
         name = '{}{}'.format(str(fileName) + getCurrentDateTimeFormatted(), '.xlsx')
         file.save('./static/{}'.format(name))
-        zipName = generateSanjiantaoWithColor('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, files_symbol)
+        zipName = generateSanjiantaoWithColor('./static/{}'.format(name), name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol)
         return jsonify({"name": zipName, 'code': 200})
 
 #翻译

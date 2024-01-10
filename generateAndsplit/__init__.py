@@ -1524,7 +1524,7 @@ def generateYulianWithColor(input, name, num, id_symbol, price, price_before_dis
 
 
 # 多配色三件套
-def generateSanjiantaoWithColor(input, name, num, id_symbol, price, price_before_discount, length_of_sku, files_symbol):
+def generateSanjiantaoWithColor(input, name, num, id_symbol, price, price_before_discount, length_of_sku, width_of_sku, files_symbol):
     newNameLists = []
 
     #复制输入的文件，并且删除多余的文件内容作为输出的模板
@@ -1594,6 +1594,7 @@ def generateSanjiantaoWithColor(input, name, num, id_symbol, price, price_before
             df.loc[i, 'Price, USD*'] = price[j]
             df.loc[i, 'Price before discount, USD'] = price_before_discount[j]
             df.loc[i, 'Duvet Cover Size'] = length_of_sku[j]
+            df.loc[i, 'Bed Sheet Size'] = width_of_sku[j]
             df.loc[i, "Article code*"] = df.iloc[i]["Model Name (to combine products into one PDP)*"] + df.iloc[i]["Product color"] + id_symbol[j]
             row = df.iloc[i].tolist()
             new_rows.append(row)
